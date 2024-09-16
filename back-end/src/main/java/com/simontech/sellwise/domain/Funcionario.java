@@ -1,19 +1,16 @@
 package com.simontech.sellwise.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.simontech.sellwise.domain.enums.NivelAutenticacao;
 
 import java.time.LocalDate;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -46,7 +43,6 @@ public class Funcionario extends Pessoa {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataAdmissao = LocalDate.now();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "NivelAutenticacao")
-    private Set<Integer> nivelAutenticacao = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    private NivelAutenticacao nivelAutenticacao;
 }

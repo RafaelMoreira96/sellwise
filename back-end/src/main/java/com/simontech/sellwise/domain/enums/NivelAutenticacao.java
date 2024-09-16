@@ -15,16 +15,8 @@ public enum NivelAutenticacao {
         return codigo;
     }
 
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
-    }
-
     public String getDescricao() {
         return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public static NivelAutenticacao toEnum(Integer cod) {

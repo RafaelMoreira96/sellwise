@@ -29,17 +29,16 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
-
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) 
-public class Pessoa {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPessoa;
+    protected Long idPessoa;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
-    protected Endereco endereco;
+    private Endereco endereco;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     protected List<Contato> contatos = new ArrayList<>();
