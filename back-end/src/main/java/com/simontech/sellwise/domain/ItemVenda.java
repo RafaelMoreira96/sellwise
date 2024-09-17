@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,17 +13,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
 @Entity
-@Table(name = "forma_pagamento")
-public class FormaPagamento {
+@Table(name = "item_venda")
+public class ItemVenda {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer idFormaPagamento;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer idItemVenda;
+    private Integer idProduto;
+    @NotNull
     private String descricao;
+    @NotNull
+    private String codBarras;
+    @NotNull
+    private double precoVendido;
+    @NotNull
+    private double desconto;
+    @NotNull
+    private double quant;
 }

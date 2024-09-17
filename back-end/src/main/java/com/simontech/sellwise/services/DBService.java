@@ -2,25 +2,38 @@ package com.simontech.sellwise.services;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.simontech.sellwise.domain.Cliente;
+import com.simontech.sellwise.domain.Compra;
 import com.simontech.sellwise.domain.Contato;
 import com.simontech.sellwise.domain.Endereco;
 import com.simontech.sellwise.domain.FormaPagamento;
 import com.simontech.sellwise.domain.Fornecedor;
 import com.simontech.sellwise.domain.Funcionario;
+import com.simontech.sellwise.domain.ItemCompra;
+import com.simontech.sellwise.domain.ItemVenda;
 import com.simontech.sellwise.domain.Produto;
 import com.simontech.sellwise.domain.UserFuncionario;
+import com.simontech.sellwise.domain.Venda;
 import com.simontech.sellwise.domain.enums.NivelAutenticacao;
+import com.simontech.sellwise.domain.enums.StatusCompra;
+import com.simontech.sellwise.domain.enums.StatusVenda;
 import com.simontech.sellwise.repositories.ClienteRepository;
+import com.simontech.sellwise.repositories.CompraRepository;
 import com.simontech.sellwise.repositories.FormaPagamentoRepository;
 import com.simontech.sellwise.repositories.FornecedorRepository;
 import com.simontech.sellwise.repositories.FuncionarioRepository;
+import com.simontech.sellwise.repositories.ItemCompraRepository;
+import com.simontech.sellwise.repositories.ItemVendaRepository;
 import com.simontech.sellwise.repositories.ProdutoRepository;
+import com.simontech.sellwise.repositories.VendaRepository;
 
 @Service
 public class DBService {
@@ -35,6 +48,14 @@ public class DBService {
     private FornecedorRepository fornecedorRepository;
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+    @Autowired
+    private VendaRepository vendaRepository;
+    @Autowired
+    private CompraRepository compraRepository;
+    @Autowired
+    private ItemVendaRepository itemVendaRepository;
+    @Autowired
+    private ItemCompraRepository itemCompraRepository;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -44,6 +65,8 @@ public class DBService {
         saveCliente();
         saveFornecedor();
         saveFuncionario();
+        saveVenda();
+        saveCompra();
     }
 
     public void saveFormaPagamento() {
@@ -193,8 +216,146 @@ public class DBService {
         funcionario2.getContatos().add(new Contato(null, "6666666666", "11", funcionario2));
         funcionario2.setNivelAutenticacao(NivelAutenticacao.ADMIN);
         funcionario2.setUserFuncionario(new UserFuncionario(null, "teste.teste2", "123456", funcionario2));
-        
+
         funcionarioRepository.saveAll(Arrays.asList(funcionario1, funcionario2));
     }
 
+    public void saveVenda() {
+        if (vendaRepository.count() > 0) {
+            return;
+        }
+        double valorVenda = 0;
+
+        // Verifica se Cliente existe
+        Cliente cliente = clienteRepository.findById(1)
+                .orElseThrow(() -> new NoSuchElementException("Cliente com ID 1 não encontrado"));
+
+        // Verifica se Funcionario existe
+        Funcionario funcionario = funcionarioRepository.findById(6)
+                .orElseThrow(() -> new NoSuchElementException("Funcionario com ID 1 não encontrado"));
+
+        // Verifica se FormaPagamento existe
+        FormaPagamento formaPagamento = formaPagamentoRepository.findById(1)
+                .orElseThrow(() -> new NoSuchElementException("Forma de pagamento com ID 1 não encontrada"));
+
+        // Verifica se Produto1 existe
+        Produto produto1 = produtoRepository.findById(1)
+                .orElseThrow(() -> new NoSuchElementException("Produto com ID 1 não encontrado"));
+
+        ItemVenda itemVenda1 = new ItemVenda(
+                null,
+                produto1.getIdProduto(),
+                produto1.getDescricao(),
+                produto1.getCodBarras(),
+                produto1.getPrecoVarejo(),
+                0,
+                2);
+
+        // Verifica se Produto2 existe
+        Produto produto2 = produtoRepository.findById(2)
+                .orElseThrow(() -> new NoSuchElementException("Produto com ID 2 não encontrado"));
+
+        ItemVenda itemVenda2 = new ItemVenda(
+                null,
+                produto2.getIdProduto(),
+                produto2.getDescricao(),
+                produto2.getCodBarras(),
+                produto2.getPrecoVarejo(),
+                0,
+                2);
+
+        // Salva os itens de venda
+        itemVenda1 = itemVendaRepository.save(itemVenda1);
+        itemVenda2 = itemVendaRepository.save(itemVenda2);
+
+        List<ItemVenda> itensVenda = new ArrayList<>();
+        itensVenda.add(itemVenda1);
+        itensVenda.add(itemVenda2);
+
+        // Cria a venda
+        Venda venda1 = new Venda();
+        venda1.setCliente(cliente);
+        venda1.setDataVenda(LocalDate.now());
+        venda1.setFuncionario(funcionario);
+        venda1.setFormaPagamento(formaPagamento);
+        venda1.setItens(itensVenda);
+        venda1.setNumeroVenda(1);
+        venda1.setStatus(StatusVenda.FINALIZADO);
+
+        // Calcula o valor total da venda
+        for (ItemVenda itemVenda : itensVenda) {
+            valorVenda += itemVenda.getPrecoVendido() - itemVenda.getDesconto();
+        }
+
+        venda1.setValorVenda(valorVenda);
+
+        // Salva a venda
+        vendaRepository.save(venda1);
+    }
+
+    public void saveCompra() {
+        if (compraRepository.count() > 0) {
+            return;
+        }
+        double valorCompra = 0;
+
+        // Verifica se Fornecedor existe
+        Fornecedor fornecedor = fornecedorRepository.findById(4)
+                .orElseThrow(() -> new NoSuchElementException("Fornecedor com ID 1 não encontrado"));
+
+        // Verifica se Funcionario existe
+        Funcionario funcionario = funcionarioRepository.findById(6)
+                .orElseThrow(() -> new NoSuchElementException("Funcionario com ID 1 não encontrado"));
+
+        // Verifica se Produto1 existe
+        Produto produto1 = produtoRepository.findById(1)
+                .orElseThrow(() -> new NoSuchElementException("Produto com ID 1 não encontrado"));
+
+        ItemCompra itemCompra1 = new ItemCompra(
+                null,
+                produto1.getIdProduto(),
+                produto1.getDescricao(),
+                produto1.getCodBarras(),
+                produto1.getPrecoAtacado(),
+                2);
+
+        // Verifica se Produto2 existe
+        Produto produto2 = produtoRepository.findById(2)
+                .orElseThrow(() -> new NoSuchElementException("Produto com ID 2 não encontrado"));
+
+        ItemCompra itemCompra2 = new ItemCompra(
+                null,
+                produto2.getIdProduto(),
+                produto2.getDescricao(),
+                produto2.getCodBarras(),
+                produto2.getPrecoAtacado(),
+                2);
+
+        // Salva os itens de compra
+        itemCompra1 = itemCompraRepository.save(itemCompra1);
+        itemCompra2 = itemCompraRepository.save(itemCompra2);
+
+        List<ItemCompra> itensCompra = new ArrayList<>();
+        itensCompra.add(itemCompra1);
+        itensCompra.add(itemCompra2);
+
+        // Cria a compra
+        Compra compra1 = new Compra();
+        compra1.setFornecedor(fornecedor);
+        compra1.setDataCompra(LocalDate.now());
+        compra1.setItens(itensCompra);
+        compra1.setNumeroCompra(1);
+        compra1.setFuncionario(funcionario);
+        compra1.setStatus(StatusCompra.FINALIZADO);
+
+        // Calcula o valor total da compra
+        for (ItemCompra itemCompra : itensCompra) {
+            valorCompra += itemCompra.getPrecoCompra();
+        }
+
+        compra1.setValorTotal(valorCompra);
+
+        // Salva a compra
+        compraRepository.save(compra1);
+    }
 }
