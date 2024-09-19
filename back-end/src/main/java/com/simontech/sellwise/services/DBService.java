@@ -98,7 +98,7 @@ public class DBService {
         }
 
         Cliente cliente1 = new Cliente();
-        cliente1.setIdPessoa(4L);
+        cliente1.setIdPessoa(null);
         cliente1.setNome("Cliente Teste");
         cliente1.setCpf("075.971.350-25");
         cliente1.setDataNascimento(LocalDate.parse("01/01/1990", formatter));
@@ -110,7 +110,7 @@ public class DBService {
         cliente1.getContatos().add(new Contato(null, "5555555555", "11", cliente1));
 
         Cliente cliente2 = new Cliente();
-        cliente2.setIdPessoa(5L);
+        cliente2.setIdPessoa(null);
         cliente2.setNome("Cliente Teste 2");
         cliente2.setCpf("075.971.350-25");
         cliente2.setDataNascimento(LocalDate.parse("01/01/1990", formatter));
@@ -123,7 +123,7 @@ public class DBService {
         cliente2.getContatos().add(new Contato(null, "6666666666", "11", cliente2));
 
         Cliente cliente3 = new Cliente();
-        cliente3.setIdPessoa(6L);
+        cliente3.setIdPessoa(null);
         cliente3.setNome("Cliente Teste 3");
         cliente3.setCpf("075.971.350-25");
         cliente3.setDataNascimento(LocalDate.parse("01/01/1990", formatter));
@@ -146,7 +146,7 @@ public class DBService {
         }
 
         Fornecedor fornecedor1 = new Fornecedor();
-        fornecedor1.setIdPessoa(7L);
+        fornecedor1.setIdPessoa(null);
         fornecedor1.setNomeFantasia("Fornecedor Teste");
         fornecedor1.setInscricaoEstadual("Teste");
         fornecedor1.setDataCadastro(LocalDate.now());
@@ -161,7 +161,7 @@ public class DBService {
         fornecedor1.getContatos().add(new Contato(null, "5555555555", "11", fornecedor1));
 
         Fornecedor fornecedor2 = new Fornecedor();
-        fornecedor2.setIdPessoa(8L);
+        fornecedor2.setIdPessoa(null);
         fornecedor2.setNomeFantasia("Fornecedor Teste 2");
         fornecedor2.setInscricaoEstadual("Teste 2");
         fornecedor2.setDataCadastro(LocalDate.now());
@@ -184,7 +184,7 @@ public class DBService {
         }
 
         Funcionario funcionario1 = new Funcionario();
-        funcionario1.setIdPessoa(9L);
+        funcionario1.setIdPessoa(null);
         funcionario1.setNome("Funcionario Teste");
         funcionario1.setCpf("594.946.940-23");
         funcionario1.setDataAdmissao(LocalDate.now());
@@ -201,7 +201,7 @@ public class DBService {
         funcionario1.setUserFuncionario(new UserFuncionario(null, "teste.teste", "123456", funcionario1));
 
         Funcionario funcionario2 = new Funcionario();
-        funcionario2.setIdPessoa(10L);
+        funcionario2.setIdPessoa(null);
         funcionario2.setNome("Funcionario Teste 2");
         funcionario2.setCpf("821.459.970-91");
         funcionario2.setDataAdmissao(LocalDate.now());

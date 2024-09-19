@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.simontech.sellwise.domain.FormaPagamento;
-import com.simontech.sellwise.domain.dtos.FormaPagamentoDTO;
+import com.simontech.sellwise.domain.dtos.FormaPagamentoDto;
 import com.simontech.sellwise.services.FormaPagamentoService;
 
 import jakarta.validation.Valid;
@@ -30,22 +30,22 @@ public class FormaPagamentoResource {
     
     // Procura por ID
     @GetMapping(value = "/{id}")
-    public ResponseEntity<FormaPagamentoDTO> findById(@PathVariable Integer id) {
+    public ResponseEntity<FormaPagamentoDto> findById(@PathVariable Integer id) {
         FormaPagamento obj = service.findById(id);
-        return ResponseEntity.ok().body(new FormaPagamentoDTO(obj));
+        return ResponseEntity.ok().body(new FormaPagamentoDto(obj));
     }
 
     // Lista todos
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoDTO>> findAll() {
+    public ResponseEntity<List<FormaPagamentoDto>> findAll() {
         List<FormaPagamento> list = service.findAll();
-        List<FormaPagamentoDTO> listDTO = list.stream().map(obj -> new FormaPagamentoDTO(obj)).collect(Collectors.toList());
+        List<FormaPagamentoDto> listDTO = list.stream().map(obj -> new FormaPagamentoDto(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTO);
     }
 
     // Cadastrar
     @PostMapping
-    public ResponseEntity<FormaPagamentoDTO> create(@Valid @RequestBody FormaPagamentoDTO formaPagamentoDTO) {
+    public ResponseEntity<FormaPagamentoDto> create(@Valid @RequestBody FormaPagamentoDto formaPagamentoDTO) {
         FormaPagamento formaPagamento = service.create(formaPagamentoDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(formaPagamento.getIdFormaPagamento()).toUri();
         return ResponseEntity.created(uri).build();
@@ -53,14 +53,14 @@ public class FormaPagamentoResource {
 
     // Atualizar
     @PutMapping(value = "/{id}")
-    public ResponseEntity<FormaPagamentoDTO> update(@PathVariable Integer id, @RequestBody FormaPagamentoDTO formaPagamentoDTO) {
+    public ResponseEntity<FormaPagamentoDto> update(@PathVariable Integer id, @RequestBody FormaPagamentoDto formaPagamentoDTO) {
         FormaPagamento formaPagamento = service.update(id, formaPagamentoDTO);
-        return ResponseEntity.ok().body(new FormaPagamentoDTO(formaPagamento));
+        return ResponseEntity.ok().body(new FormaPagamentoDto(formaPagamento));
     }
 
     // Deletar 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<FormaPagamentoDTO> delete(@PathVariable Integer id) {
+    public ResponseEntity<FormaPagamentoDto> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -1,5 +1,7 @@
 package com.simontech.sellwise.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +31,7 @@ public class Contato {
     private String numero;
     private String tipo;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;

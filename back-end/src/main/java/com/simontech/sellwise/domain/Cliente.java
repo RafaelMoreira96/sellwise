@@ -1,10 +1,15 @@
 package com.simontech.sellwise.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,4 +31,8 @@ public class Cliente extends Pessoa {
     @CPF protected String cpf;
     private LocalDate dataNascimento;
     private boolean status = true;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cliente")
+    private List<Venda> vendasDoCliente = new ArrayList<>();
 }

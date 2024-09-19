@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.simontech.sellwise.domain.FormaPagamento;
-import com.simontech.sellwise.domain.dtos.FormaPagamentoDTO;
+import com.simontech.sellwise.domain.dtos.FormaPagamentoDto;
 import com.simontech.sellwise.repositories.FormaPagamentoRepository;
 import com.simontech.sellwise.services.exceptions.ObjectNotFoundException;
 
@@ -20,8 +20,8 @@ public class FormaPagamentoService {
 
      // Busca por ID
     public FormaPagamento findById(Integer id) {
-        Optional<FormaPagamento> o = repository.findById(id);
-        return o.orElseThrow(() -> new ObjectNotFoundException("FormaPagamento não encontrado! ID: " + id));
+        Optional<FormaPagamento> optional = repository.findById(id);
+        return optional.orElseThrow(() -> new ObjectNotFoundException("FormaPagamento não encontrado! ID: " + id));
     }
      // Lista todos
     public List<FormaPagamento> findAll() {
@@ -29,18 +29,18 @@ public class FormaPagamentoService {
     }
 
     // Cadastrar
-    public FormaPagamento create(@Valid FormaPagamentoDTO formaPagamentoDTO) {
+    public FormaPagamento create(@Valid FormaPagamentoDto formaPagamentoDto) {
         FormaPagamento formaPagamento = new FormaPagamento();
         formaPagamento.setIdFormaPagamento(null);
-        formaPagamento.setDescricao(formaPagamentoDTO.getDescricao());
+        formaPagamento.setDescricao(formaPagamentoDto.descricao());
         return repository.save(formaPagamento);
     }
 
     // Atualizar
-    public FormaPagamento update(Integer id, @Valid FormaPagamentoDTO formaPagamentoDTO) {
+    public FormaPagamento update(Integer id, @Valid FormaPagamentoDto formaPagamentoDTO) {
         FormaPagamento formaPagamento = new FormaPagamento();
         formaPagamento.setIdFormaPagamento(id);
-        formaPagamento.setDescricao(formaPagamentoDTO.getDescricao());
+        formaPagamento.setDescricao(formaPagamentoDTO.descricao());
         return repository.save(formaPagamento);
     }
 
