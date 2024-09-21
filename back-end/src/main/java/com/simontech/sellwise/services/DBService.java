@@ -103,6 +103,7 @@ public class DBService {
         cliente1.setCpf("075.971.350-25");
         cliente1.setDataNascimento(LocalDate.parse("01/01/1990", formatter));
         cliente1.setStatus(true);
+        cliente1.setDataCadastro(LocalDate.parse("01/01/1990", formatter));
         cliente1.setEndereco(new Endereco(null, "79456-888", "Rua Teste", "123", "complemento de teste", "cidade teste",
                 "32145678900", "SP"));
         cliente1.getContatos().add(new Contato(null, "1234567890", "11", cliente1));

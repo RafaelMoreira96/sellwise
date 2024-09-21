@@ -13,6 +13,7 @@ import com.simontech.sellwise.domain.Endereco;
 import jakarta.validation.constraints.NotNull;
 
 public class ClienteDto {
+    
     private Integer idCliente;
 
     @NotNull(message = "O campo 'NOME' precisa ser preenchido")
@@ -47,6 +48,7 @@ public class ClienteDto {
         this.endereco = cliente.getEndereco();
         this.contatos = cliente.getContatos();
         this.dataCadastro = cliente.getDataCadastro();
+        this.dataNascimento = cliente.getDataNascimento();
         this.status = cliente.isStatus();
     }
 
@@ -58,6 +60,7 @@ public class ClienteDto {
             this.endereco = cliente.get().getEndereco();
             this.contatos = cliente.get().getContatos();
             this.dataCadastro = cliente.get().getDataCadastro();
+            this.dataNascimento = cliente.get().getDataNascimento();
             this.status = cliente.get().isStatus();
         }
     }
@@ -120,6 +123,14 @@ public class ClienteDto {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public LocalDate getDataNascimento() {
+        return this.dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
 }

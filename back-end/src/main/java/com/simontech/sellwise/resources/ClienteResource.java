@@ -38,24 +38,24 @@ public class ClienteResource {
     // Lista todos
     @GetMapping
     public ResponseEntity<List<ClienteDto>> findAll() {
-        List<Cliente> list = service.findAll();
-        List<ClienteDto> listDTO = list.stream().map(obj -> new ClienteDto(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listDTO);
+        List<Cliente> listClientes = service.findAll();
+        List<ClienteDto> listClientesDto = listClientes.stream().map(obj -> new ClienteDto(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listClientesDto);
     }
 
     // Cadastrar cliente
     @PostMapping
-    public ResponseEntity<ClienteDto> create(@Valid @RequestBody ClienteDto cDTO) {
-        Cliente c = service.create(cDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(c.getIdPessoa()).toUri();
+    public ResponseEntity<ClienteDto> create(@Valid @RequestBody ClienteDto clienteDto) {
+        Cliente cliente = service.create(clienteDto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(cliente.getIdPessoa()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     // Atualizar cliente
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ClienteDto> update(@PathVariable Integer id, @RequestBody ClienteDto cDTO) {
-        Cliente c = service.update(id, cDTO);
-        return ResponseEntity.ok().body(new ClienteDto(c));
+    public ResponseEntity<ClienteDto> update(@PathVariable Integer id, @RequestBody ClienteDto clienteDto) {
+        Cliente cliente = service.update(id, clienteDto);
+        return ResponseEntity.ok().body(new ClienteDto(cliente));
     }
 
     // Deletar cliente

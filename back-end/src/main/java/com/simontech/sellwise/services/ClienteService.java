@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 
 @Service
 public class ClienteService {
-     @Autowired
+    @Autowired
     private ClienteRepository repository;
     @Autowired
     private EnderecoRepository enderecoRepository;
@@ -30,14 +30,14 @@ public class ClienteService {
 
     // Busca por ID
     public Cliente findById(Integer id) {
-        Optional<Cliente> optional = repository.findById(id);
-        return optional.orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado! ID: " + id));
+        Optional<Cliente> optionalCliente = repository.findById(id);
+        return optionalCliente.orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado! ID: " + id));
     }
 
     // Busca por CPF
     public Cliente findByCpf(String cpf) {
-        Optional<Cliente> o = repository.findByCpf(cpf);
-        return o.orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado."));
+        Optional<Cliente> optionalCliente = repository.findByCpf(cpf);
+        return optionalCliente.orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado."));
     }
 
     // Lista todos
@@ -54,55 +54,9 @@ public class ClienteService {
 
     public Cliente create(@Valid ClienteDto clienteDto) {
         validaCpf(clienteDto);
-    
-        // Preparando objeto Endereço e persistindo
-        Endereco e = new Endereco();
-        e.setCep(clienteDto.getEndereco().getCep());
-        e.setNumero(clienteDto.getEndereco().getNumero());
-        e.setComplemento(clienteDto.getEndereco().getComplemento());
-        e.setBairro(clienteDto.getEndereco().getBairro());
-        e.setCidade(clienteDto.getEndereco().getCidade());
-        e.setEstado(clienteDto.getEndereco().getEstado());
-        e.setLogradouro(clienteDto.getEndereco().getLogradouro());
-        
-        enderecoRepository.save(e);
-    
-        // Preparando objeto Cliente para persistência
-        Cliente cliente = new Cliente();
-        cliente.setIdPessoa(null);
-        cliente.setCpf(clienteDto.getCpf());
-        cliente.setEndereco(e);
-        cliente.setNome(clienteDto.getNome());
-        cliente.setStatus(clienteDto.getStatus());
-    
-        // Associando contatos ao cliente
-        List<Contato> contatos = new ArrayList<>();
-        for (Contato contato : clienteDto.getContatos()) {
-            contato.setIdContato(null); // Garante que o ID seja gerado pelo banco
-            contato.setPessoa(cliente); // Associa o contato ao cliente
-            contatos.add(contato);
-        }
-        cliente.setContatos(contatos);
-    
-        // Salvando cliente (isso irá salvar também os contatos devido ao CascadeType.ALL)
-        return repository.save(cliente);
-    }
-    
 
-    // Atualizar cliente
-    public Cliente update(Integer idPessoa, @Valid ClienteDto clienteDto) {
-        clienteDto.setIdCliente(idPessoa);
-        Cliente clienteDB = findById(idPessoa);
-        if (clienteDto.getCpf().equals(clienteDB.getCpf())) {
-            clienteDto.getEndereco().setIdEndereco(clienteDB.getEndereco().getIdEndereco());
-        } else {
-            validaCpf(clienteDto);
-            clienteDto.getEndereco().setIdEndereco(clienteDB.getEndereco().getIdEndereco());
-        }
         // Preparando objeto Endereço e persistindo
         Endereco endereco = new Endereco();
-
-        endereco.setIdEndereco(clienteDto.getEndereco().getIdEndereco());
         endereco.setCep(clienteDto.getEndereco().getCep());
         endereco.setNumero(clienteDto.getEndereco().getNumero());
         endereco.setComplemento(clienteDto.getEndereco().getComplemento());
@@ -111,30 +65,71 @@ public class ClienteService {
         endereco.setEstado(clienteDto.getEndereco().getEstado());
         endereco.setLogradouro(clienteDto.getEndereco().getLogradouro());
 
-        enderecoRepository.save(endereco);
+        // Preparando objeto Cliente para persistência
+        Cliente cliente = new Cliente();
+        cliente.setIdPessoa(null);
+        cliente.setCpf(clienteDto.getCpf());
+        cliente.setEndereco(endereco);
+        cliente.setNome(clienteDto.getNome());
+        cliente.setDataNascimento(clienteDto.getDataNascimento());
+        cliente.setStatus(clienteDto.getStatus());
 
-        // Preparando objeto Contato e persistindo
-        Cliente temporarioCliente = findById(clienteDto.getIdCliente());
+        // Associando contatos ao cliente
         List<Contato> contatos = new ArrayList<>();
         for (Contato contato : clienteDto.getContatos()) {
             contato.setIdContato(null);
+            contato.setPessoa(cliente);
             contatos.add(contato);
         }
-        clienteDto.setContatos(contatos);
-        for (int i = 0; i < temporarioCliente.getContatos().size(); i++) {
-            Contato contato = temporarioCliente.getContatos().get(i);
-            contatos.get(i).setIdContato(contato.getIdContato());
-        }
-        contatoRepository.saveAll(contatos);
-
-        // Preparando objeto Cliente para persistencia
-        Cliente cliente = new Cliente();
-        cliente.setIdPessoa(idPessoa);
-        cliente.setCpf(clienteDto.getCpf());
-        cliente.setEndereco(endereco);
         cliente.setContatos(contatos);
-        cliente.setNome(clienteDto.getNome());
+
         return repository.save(cliente);
+    }
+
+    // Atualizar cliente
+    public Cliente update(Integer idPessoa, @Valid ClienteDto clienteDto) {
+        // Buscar o cliente existente no banco de dados
+        Cliente clienteDB = findById(idPessoa);
+
+        // Verificar se o CPF foi alterado
+        if (!clienteDto.getCpf().equals(clienteDB.getCpf())) {
+            validaCpf(clienteDto);
+        }
+
+        // Atualizando primeiros atributos de cliente
+        clienteDB.setNome(clienteDto.getNome());
+        clienteDB.setDataNascimento(clienteDto.getDataNascimento());
+        clienteDB.setStatus(clienteDto.getStatus());
+
+        List<Contato> contatos = clienteDB.getContatos();
+        for (Contato contato : clienteDto.getContatos()) {
+            Optional<Contato> contatoExistente = clienteDB.getContatos().stream()
+                    .filter(c -> c.getIdContato().equals(contato.getIdContato()))
+                    .findFirst();
+
+            if (contatoExistente.isPresent()) {
+                contatoExistente.get().setNumero(contato.getNumero());
+                contatoExistente.get().setTipo(contato.getTipo());
+            } else {
+                contato.setIdContato(null);
+                contato.setPessoa(clienteDB);
+                contatos.add(contato);
+            }
+        }
+
+        // Atualizar o endereço existente
+        Endereco endereco = clienteDB.getEndereco();
+        endereco.setCep(clienteDto.getEndereco().getCep());
+        endereco.setNumero(clienteDto.getEndereco().getNumero());
+        endereco.setComplemento(clienteDto.getEndereco().getComplemento());
+        endereco.setBairro(clienteDto.getEndereco().getBairro());
+        endereco.setCidade(clienteDto.getEndereco().getCidade());
+        endereco.setEstado(clienteDto.getEndereco().getEstado());
+        endereco.setLogradouro(clienteDto.getEndereco().getLogradouro());
+        clienteDB.setEndereco(endereco);
+
+        // Salvar as alterações no banco de dados
+        return repository.save(clienteDB);
     }
 
     /*
@@ -145,7 +140,7 @@ public class ClienteService {
         Cliente cliente = findById(id);
         cliente.setStatus(false);
         repository.save(cliente);
-        //repository.delete(cliente);
+        // repository.delete(cliente);
     }
 
     public void validaCpf(ClienteDto clienteDto) {

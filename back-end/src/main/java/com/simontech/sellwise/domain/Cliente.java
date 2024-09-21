@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -29,7 +30,10 @@ import lombok.ToString;
 public class Cliente extends Pessoa {
     protected String nome;
     @CPF protected String cpf;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
+    
     private boolean status = true;
 
     @JsonIgnore
