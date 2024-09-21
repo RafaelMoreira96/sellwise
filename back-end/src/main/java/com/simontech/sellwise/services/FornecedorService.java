@@ -12,8 +12,6 @@ import com.simontech.sellwise.domain.Contato;
 import com.simontech.sellwise.domain.Endereco;
 import com.simontech.sellwise.domain.dtos.FornecedorDto;
 import com.simontech.sellwise.repositories.FornecedorRepository;
-import com.simontech.sellwise.repositories.ContatoRepository;
-import com.simontech.sellwise.repositories.EnderecoRepository;
 import com.simontech.sellwise.services.exceptions.DataIntegrityViolationException;
 import com.simontech.sellwise.services.exceptions.ObjectNotFoundException;
 
@@ -23,10 +21,6 @@ import jakarta.validation.Valid;
 public class FornecedorService {
     @Autowired
     private FornecedorRepository repository;
-    @Autowired
-    private EnderecoRepository enderecoRepository;
-    @Autowired
-    private ContatoRepository contatoRepository;
 
     // Busca por ID
     public Fornecedor findById(Integer id) {
@@ -147,15 +141,6 @@ public class FornecedorService {
     }
 
     // Validação de CNPJ
-    /*
-     * public void validaCnpj(FornecedorDto fornecedorDto) {
-     * Optional<Fornecedor> obj = repository.findByCnpj(fornecedorDto.getCnpj());
-     * if (obj.isPresent() && !obj.get().getCnpj().equals(fornecedorDto.getCnpj()))
-     * {
-     * throw new DataIntegrityViolationException("CNPJ já cadastrado!");
-     * }
-     * }
-     */
     public void validaCnpj(FornecedorDto fornecedorDto) {
         Optional<Fornecedor> obj = repository.findByCnpj(fornecedorDto.getCnpj());
         if (obj.isPresent() && obj.get().getCnpj() != fornecedorDto.getCnpj()) {

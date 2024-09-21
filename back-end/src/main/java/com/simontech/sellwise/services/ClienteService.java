@@ -12,8 +12,6 @@ import com.simontech.sellwise.domain.Contato;
 import com.simontech.sellwise.domain.Endereco;
 import com.simontech.sellwise.domain.dtos.ClienteDto;
 import com.simontech.sellwise.repositories.ClienteRepository;
-import com.simontech.sellwise.repositories.ContatoRepository;
-import com.simontech.sellwise.repositories.EnderecoRepository;
 import com.simontech.sellwise.services.exceptions.DataIntegrityViolationException;
 import com.simontech.sellwise.services.exceptions.ObjectNotFoundException;
 
@@ -23,10 +21,6 @@ import jakarta.validation.Valid;
 public class ClienteService {
     @Autowired
     private ClienteRepository repository;
-    @Autowired
-    private EnderecoRepository enderecoRepository;
-    @Autowired
-    private ContatoRepository contatoRepository;
 
     // Busca por ID
     public Cliente findById(Integer id) {
