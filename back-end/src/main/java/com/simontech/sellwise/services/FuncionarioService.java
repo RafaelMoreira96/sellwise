@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.simontech.sellwise.domain.Contato;
 import com.simontech.sellwise.domain.Endereco;
-import com.simontech.sellwise.domain.Fornecedor;
 import com.simontech.sellwise.domain.Funcionario;
 import com.simontech.sellwise.domain.UserFuncionario;
 import com.simontech.sellwise.domain.dtos.FuncionarioDto;

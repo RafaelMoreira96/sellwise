@@ -5,6 +5,8 @@ import org.hibernate.validator.constraints.br.CPF;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simontech.sellwise.domain.enums.NivelAutenticacao;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 import java.time.LocalDate;
 
 import jakarta.persistence.CascadeType;
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Hidden
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

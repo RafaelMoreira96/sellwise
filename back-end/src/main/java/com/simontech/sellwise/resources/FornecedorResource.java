@@ -20,22 +20,25 @@ import com.simontech.sellwise.domain.Fornecedor;
 import com.simontech.sellwise.domain.dtos.FornecedorDto;
 import com.simontech.sellwise.services.FornecedorService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Fornecedor", description = "Operações CRUD relacionadas aos fornecedores")
 @RequestMapping(value = "/fornecedor")
 public class FornecedorResource {
     @Autowired
     private FornecedorService service;
 
-    // Procura por ID
+    @Operation(summary = "Busca fornecedor por ID", description = "Retorna um fornecedor a partir do ID.")
     @GetMapping(value = "/{id}")
     public ResponseEntity<FornecedorDto> findById(@PathVariable Integer id) {
         Fornecedor fornecedorObject = service.findById(id);
         return ResponseEntity.ok().body(new FornecedorDto(fornecedorObject));
     }
 
-    // Lista todos
+    @Operation(summary = "Lista todos os fornecedores", description = "Retorna uma lista com todos os fornecedores cadastrados.")
     @GetMapping
     public ResponseEntity<List<FornecedorDto>> findAll() {
         List<Fornecedor> listFornecedores = service.findAll();
@@ -43,7 +46,7 @@ public class FornecedorResource {
         return ResponseEntity.ok().body(listFornecedoresDto);
     }
 
-    // Cadastrar fornecedor
+    @Operation(summary = "Cadastra um novo fornecedor", description = "Cadastra um novo fornecedor.")
     @PostMapping
     public ResponseEntity<FornecedorDto> create(@Valid @RequestBody FornecedorDto fornecedorDto) {
         Fornecedor fornecedor = service.create(fornecedorDto);
@@ -51,14 +54,14 @@ public class FornecedorResource {
         return ResponseEntity.created(uri).build();
     }
 
-    // Atualizar fornecedor
+    @Operation(summary = "Atualiza um fornecedor", description = "Atualiza um fornecedor a partir do ID.")
     @PutMapping(value = "/{id}")
     public ResponseEntity<FornecedorDto> update(@PathVariable Integer id, @RequestBody FornecedorDto fornecedorDto) {
         Fornecedor fornecedor = service.update(id, fornecedorDto);
         return ResponseEntity.ok().body(new FornecedorDto(fornecedor));
     }
 
-    // Deletar fornecedor
+    @Operation(summary = "Deleta um fornecedor", description = "Deleta um fornecedor a partir do ID.")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<FornecedorDto> delete(@PathVariable Integer id) {
         service.delete(id);

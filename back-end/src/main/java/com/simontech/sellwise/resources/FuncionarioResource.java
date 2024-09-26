@@ -20,22 +20,25 @@ import com.simontech.sellwise.domain.Funcionario;
 import com.simontech.sellwise.domain.dtos.FuncionarioDto;
 import com.simontech.sellwise.services.FuncionarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Funcionário", description = "Operações CRUD relacionadas aos funcionários")
 @RequestMapping("/funcionario")
 public class FuncionarioResource {
     @Autowired
     private FuncionarioService service;
 
-    // Procura por ID
+    @Operation(summary = "Busca funcionário por ID", description = "Retorna um funcionário a partir do ID.")
     @GetMapping(value = "/{id}")
     public ResponseEntity<FuncionarioDto> findById(@PathVariable Integer id) {
         Funcionario funcionarioObject = service.findById(id);
         return ResponseEntity.ok().body(new FuncionarioDto(funcionarioObject));
     }
 
-    // Lista todos
+    @Operation(summary = "Lista todos os funcionários", description = "Retorna uma lista com todos os funcionários cadastrados.")
     @GetMapping
     public ResponseEntity<List<FuncionarioDto>> findAll() {
         List<Funcionario> listFuncionarios = service.findAll();
@@ -43,6 +46,7 @@ public class FuncionarioResource {
         return ResponseEntity.ok().body(list);
     }
 
+    @Operation(summary = "Cadastra um novo funcionário", description = "Cadastra um novo funcionário.")
     @PostMapping
     public ResponseEntity<FuncionarioDto> create(@Valid @RequestBody FuncionarioDto funcionarioDto){
         Funcionario funcionario = service.create(funcionarioDto);
@@ -50,12 +54,14 @@ public class FuncionarioResource {
         return ResponseEntity.created(uri).build();
     }
 
+    @Operation(summary = "Atualiza um funcionário", description = "Atualiza um funcionário a partir do ID.")
     @PutMapping(value = "/{id}")
     public ResponseEntity<FuncionarioDto> update(@PathVariable Integer id, @RequestBody FuncionarioDto funcionarioDto){
         Funcionario funcionario = service.update(id, funcionarioDto);
         return ResponseEntity.ok().body(new FuncionarioDto(funcionario));
     }
 
+    @Operation(summary = "Deleta um funcionário", description = "Deleta um funcionário a partir do ID.")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<FuncionarioDto> delete(@PathVariable Integer id){
         service.delete(id);

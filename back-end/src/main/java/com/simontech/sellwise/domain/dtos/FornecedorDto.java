@@ -12,10 +12,11 @@ import com.simontech.sellwise.domain.Contato;
 import com.simontech.sellwise.domain.Endereco;
 import com.simontech.sellwise.domain.Fornecedor;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
+@Schema(name = "Fornecedor DTO", description = "Objeto de transferência de dados para Fornecedor")
 public class FornecedorDto {
-
     private Integer idFornecedor;
 
     @NotNull(message = "O campo 'RAZÃO SOCIAL' precisa ser preenchido")
@@ -71,8 +72,6 @@ public class FornecedorDto {
             this.isActive = fornecedor.get().isActive();
         }
     }
-
-    // Getters e Setters
 
     public Integer getIdFornecedor() {
         return this.idFornecedor;

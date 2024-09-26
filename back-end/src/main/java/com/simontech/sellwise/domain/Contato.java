@@ -2,6 +2,7 @@ package com.simontech.sellwise.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Hidden
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -31,6 +33,7 @@ public class Contato {
     private String numero;
     private String tipo;
 
+    @Hidden
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "pessoa_id")

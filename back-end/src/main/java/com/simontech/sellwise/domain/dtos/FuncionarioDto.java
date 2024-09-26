@@ -11,8 +11,10 @@ import com.simontech.sellwise.domain.Endereco;
 import com.simontech.sellwise.domain.Funcionario;
 import com.simontech.sellwise.domain.UserFuncionario;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
+@Schema(name = "Funcionário DTO", description = "Objeto de transferência de dados para Funcionário")
 public class FuncionarioDto {
     private Integer idFuncionario;
 

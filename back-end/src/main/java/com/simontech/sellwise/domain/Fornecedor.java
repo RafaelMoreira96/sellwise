@@ -2,6 +2,7 @@ package com.simontech.sellwise.domain;
 
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Hidden
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

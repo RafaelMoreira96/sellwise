@@ -20,22 +20,25 @@ import com.simontech.sellwise.domain.Cliente;
 import com.simontech.sellwise.domain.dtos.ClienteDto;
 import com.simontech.sellwise.services.ClienteService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name="Cliente", description = "Operações CRUD relacionadas ao clientes")
 @RequestMapping(value = "/cliente")
 public class ClienteResource {
     @Autowired
     private ClienteService service;
 
-    // Procura por ID
+    @Operation(summary = "Busca cliente por ID", description = "Retorna um cliente a partir do ID.")
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClienteDto> findById(@PathVariable Integer id) {
         Cliente clienteObject = service.findById(id);
         return ResponseEntity.ok().body(new ClienteDto(clienteObject));
     }
 
-    // Lista todos
+    @Operation(summary = "Lista todos os clientes", description = "Retorna uma lista com todos os clientes cadastrados.")
     @GetMapping
     public ResponseEntity<List<ClienteDto>> findAll() {
         List<Cliente> listClientes = service.findAll();
@@ -43,7 +46,7 @@ public class ClienteResource {
         return ResponseEntity.ok().body(listClientesDto);
     }
 
-    // Cadastrar cliente
+    @Operation(summary = "Cadastra um novo cliente", description = "Cadastra um novo cliente.")
     @PostMapping
     public ResponseEntity<ClienteDto> create(@Valid @RequestBody ClienteDto clienteDto) {
         Cliente cliente = service.create(clienteDto);
@@ -51,14 +54,14 @@ public class ClienteResource {
         return ResponseEntity.created(uri).build();
     }
 
-    // Atualizar cliente
+    @Operation(summary = "Atualiza um cliente", description = "Atualiza um cliente a partir do ID.")
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClienteDto> update(@PathVariable Integer id, @RequestBody ClienteDto clienteDto) {
         Cliente cliente = service.update(id, clienteDto);
         return ResponseEntity.ok().body(new ClienteDto(cliente));
     }
 
-    // Deletar cliente
+    @Operation(summary = "Deleta um cliente", description = "Deleta um cliente a partir do ID.")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ClienteDto> delete(@PathVariable Integer id) {
         service.delete(id);

@@ -10,10 +10,11 @@ import com.simontech.sellwise.domain.Cliente;
 import com.simontech.sellwise.domain.Contato;
 import com.simontech.sellwise.domain.Endereco;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
+@Schema(name = "Cliente DTO", description = "Objeto de transferência de dados para Cliente")
 public class ClienteDto {
-    
     private Integer idCliente;
 
     @NotNull(message = "O campo 'NOME' precisa ser preenchido")
