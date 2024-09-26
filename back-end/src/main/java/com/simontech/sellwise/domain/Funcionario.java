@@ -38,10 +38,12 @@ public class Funcionario extends Pessoa {
     private UserFuncionario userFuncionario;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataDemissao;
+    private LocalDate dataNascimento;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataAdmissao = LocalDate.now();
+    private LocalDate dataCadastro = LocalDate.now();
+
+    private boolean status = true;
 
     @Enumerated(EnumType.STRING)
     private NivelAutenticacao nivelAutenticacao;

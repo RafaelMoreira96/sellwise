@@ -188,9 +188,8 @@ public class DBService {
         funcionario1.setIdPessoa(null);
         funcionario1.setNome("Funcionario Teste");
         funcionario1.setCpf("594.946.940-23");
-        funcionario1.setDataAdmissao(LocalDate.now());
         funcionario1.setDataCadastro(LocalDate.now());
-        funcionario1.setDataDemissao(null);
+        funcionario1.setDataNascimento(LocalDate.now());
         funcionario1
                 .setEndereco(new Endereco(null, "12345-678", "Rua Teste", "123", "complemento de teste", "cidade teste",
                         "32145678900", "SP"));
@@ -205,9 +204,8 @@ public class DBService {
         funcionario2.setIdPessoa(null);
         funcionario2.setNome("Funcionario Teste 2");
         funcionario2.setCpf("821.459.970-91");
-        funcionario2.setDataAdmissao(LocalDate.now());
         funcionario2.setDataCadastro(LocalDate.now());
-        funcionario2.setDataDemissao(null);
+        funcionario2.setDataNascimento(LocalDate.parse("31/07/1986", formatter));
         funcionario2
                 .setEndereco(new Endereco(null, "65432-111", "Rua Teste 2", "432", "complemento de teste 2",
                         "cidade teste 2", "32145678900", "SP"));

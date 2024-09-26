@@ -1,5 +1,7 @@
 package com.simontech.sellwise.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,5 +31,6 @@ public class UserFuncionario {
     private String password;
 
     @OneToOne(mappedBy = "userFuncionario")
+    @JsonIgnore
     private Funcionario funcionario;
 }
