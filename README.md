@@ -7,4 +7,18 @@ Sellwise será uma atualização do projeto de TCC que eu desenvolvi, o xCelsior
 
 Para o Sellwise, eu procuro utilizar uma das versões mais recentes do Spring Boot e também usar uma das versões mais recentes para o Angular. Dito isso, a versão do Spring Boot é a 3.2.2, usando o Java 17 ao invés do 11. 
 
+## Instalações
+Para a execução do backend do projeto, é necessário ter o Java 17 e MySQL instalado. No Windows 10/11, você pode acessar os links abaixo para a instalação:
+- Java 17: https://www.oracle.com/br/java/technologies/downloads/#jdk17-windows
+- MySQL Workbench: https://dev.mysql.com/downloads/workbench/
+ 
+Para o Linux, você pode fazer o comando abaixo para a instalação do JDL e do JRE do Java 17:
+```
+sudo apt-get install openjdk-17-jdk openjdk-17-jre
+```
 
+Para a instalação do MySQL, você pode seguir o passo a passo no link abaixo:
+
+https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04
+
+## Rotas [seção em construção]
