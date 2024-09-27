@@ -18,17 +18,14 @@ public class FormaPagamentoService {
     @Autowired
     private FormaPagamentoRepository repository;
 
-     // Busca por ID
     public FormaPagamento findById(Integer id) {
         Optional<FormaPagamento> optional = repository.findById(id);
         return optional.orElseThrow(() -> new ObjectNotFoundException("FormaPagamento não encontrado! ID: " + id));
     }
-     // Lista todos
     public List<FormaPagamento> findAll() {
         return repository.findAll();
     }
 
-    // Cadastrar
     public FormaPagamento create(@Valid FormaPagamentoDto formaPagamentoDto) {
         FormaPagamento formaPagamento = new FormaPagamento();
         formaPagamento.setIdFormaPagamento(null);
@@ -36,7 +33,6 @@ public class FormaPagamentoService {
         return repository.save(formaPagamento);
     }
 
-    // Atualizar
     public FormaPagamento update(Integer id, @Valid FormaPagamentoDto formaPagamentoDTO) {
         FormaPagamento formaPagamento = new FormaPagamento();
         formaPagamento.setIdFormaPagamento(id);
@@ -44,10 +40,6 @@ public class FormaPagamentoService {
         return repository.save(formaPagamento);
     }
 
-    /*
-     * "Remover": aqui não pode ser deletado, ele deve ser
-     * "desativado", através do atributo
-     */
     public void delete(Integer id) {
         FormaPagamento formaPagamento = findById(id);
         repository.delete(formaPagamento);

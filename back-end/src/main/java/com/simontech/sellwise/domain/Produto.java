@@ -1,6 +1,5 @@
 package com.simontech.sellwise.domain;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Hidden
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

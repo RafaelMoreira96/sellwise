@@ -37,7 +37,6 @@ import com.simontech.sellwise.repositories.VendaRepository;
 
 @Service
 public class DBService {
-
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
     @Autowired
@@ -225,19 +224,15 @@ public class DBService {
         }
         double valorVenda = 0;
 
-        // Verifica se Cliente existe
         Cliente cliente = clienteRepository.findById(1)
                 .orElseThrow(() -> new NoSuchElementException("Cliente com ID 1 não encontrado"));
 
-        // Verifica se Funcionario existe
         Funcionario funcionario = funcionarioRepository.findById(6)
                 .orElseThrow(() -> new NoSuchElementException("Funcionario com ID 1 não encontrado"));
 
-        // Verifica se FormaPagamento existe
         FormaPagamento formaPagamento = formaPagamentoRepository.findById(1)
                 .orElseThrow(() -> new NoSuchElementException("Forma de pagamento com ID 1 não encontrada"));
 
-        // Verifica se Produto1 existe
         Produto produto1 = produtoRepository.findById(1)
                 .orElseThrow(() -> new NoSuchElementException("Produto com ID 1 não encontrado"));
 
@@ -250,7 +245,6 @@ public class DBService {
                 0,
                 2);
 
-        // Verifica se Produto2 existe
         Produto produto2 = produtoRepository.findById(2)
                 .orElseThrow(() -> new NoSuchElementException("Produto com ID 2 não encontrado"));
 
@@ -263,7 +257,6 @@ public class DBService {
                 0,
                 2);
 
-        // Salva os itens de venda
         itemVenda1 = itemVendaRepository.save(itemVenda1);
         itemVenda2 = itemVendaRepository.save(itemVenda2);
 
@@ -271,7 +264,6 @@ public class DBService {
         itensVenda.add(itemVenda1);
         itensVenda.add(itemVenda2);
 
-        // Cria a venda
         Venda venda1 = new Venda();
         venda1.setCliente(cliente);
         venda1.setDataVenda(LocalDate.now());
@@ -281,14 +273,12 @@ public class DBService {
         venda1.setNumeroVenda(1);
         venda1.setStatus(StatusVenda.FINALIZADO);
 
-        // Calcula o valor total da venda
         for (ItemVenda itemVenda : itensVenda) {
             valorVenda += itemVenda.getPrecoVendido() - itemVenda.getDesconto();
         }
 
         venda1.setValorVenda(valorVenda);
 
-        // Salva a venda
         vendaRepository.save(venda1);
     }
 
@@ -298,15 +288,12 @@ public class DBService {
         }
         double valorCompra = 0;
 
-        // Verifica se Fornecedor existe
         Fornecedor fornecedor = fornecedorRepository.findById(4)
                 .orElseThrow(() -> new NoSuchElementException("Fornecedor com ID 1 não encontrado"));
 
-        // Verifica se Funcionario existe
         Funcionario funcionario = funcionarioRepository.findById(6)
                 .orElseThrow(() -> new NoSuchElementException("Funcionario com ID 1 não encontrado"));
 
-        // Verifica se Produto1 existe
         Produto produto1 = produtoRepository.findById(1)
                 .orElseThrow(() -> new NoSuchElementException("Produto com ID 1 não encontrado"));
 
@@ -318,7 +305,6 @@ public class DBService {
                 produto1.getPrecoAtacado(),
                 2);
 
-        // Verifica se Produto2 existe
         Produto produto2 = produtoRepository.findById(2)
                 .orElseThrow(() -> new NoSuchElementException("Produto com ID 2 não encontrado"));
 
@@ -330,7 +316,6 @@ public class DBService {
                 produto2.getPrecoAtacado(),
                 2);
 
-        // Salva os itens de compra
         itemCompra1 = itemCompraRepository.save(itemCompra1);
         itemCompra2 = itemCompraRepository.save(itemCompra2);
 
@@ -338,7 +323,6 @@ public class DBService {
         itensCompra.add(itemCompra1);
         itensCompra.add(itemCompra2);
 
-        // Cria a compra
         Compra compra1 = new Compra();
         compra1.setFornecedor(fornecedor);
         compra1.setDataCompra(LocalDate.now());
@@ -347,14 +331,12 @@ public class DBService {
         compra1.setFuncionario(funcionario);
         compra1.setStatus(StatusCompra.FINALIZADO);
 
-        // Calcula o valor total da compra
         for (ItemCompra itemCompra : itensCompra) {
             valorCompra += itemCompra.getPrecoCompra();
         }
 
         compra1.setValorTotal(valorCompra);
 
-        // Salva a compra
         compraRepository.save(compra1);
     }
 }

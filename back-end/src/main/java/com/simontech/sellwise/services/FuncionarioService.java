@@ -159,6 +159,7 @@ public class FuncionarioService {
         repository.save(funcionario);
     }
 
+    // Funções auxiliares
     public void validaCpf(FuncionarioDto funcionarioDto) {
         Optional<Funcionario> optionalFuncionario = repository.findByCpf(funcionarioDto.getCpf());
         if (optionalFuncionario.isPresent() && optionalFuncionario.get().getCpf() != funcionarioDto.getCpf()) {
