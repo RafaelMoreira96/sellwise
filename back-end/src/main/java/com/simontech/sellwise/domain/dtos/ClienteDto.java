@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simontech.sellwise.domain.Cliente;
 import com.simontech.sellwise.domain.Contato;
@@ -21,6 +23,7 @@ public class ClienteDto {
     private String nome;
 
     @NotNull(message = "O campo 'CPF' precisa ser preenchido")
+    @CPF(message = "CPF inválido")
     private String cpf;
 
     @NotNull(message = "O campo 'DATA DE NASCIMENTO' precisa ser preenchido")
