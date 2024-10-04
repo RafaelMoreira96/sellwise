@@ -35,8 +35,8 @@ import lombok.ToString;
 public class Compra {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private Integer numeroCompra;
+    private Integer idCompra;
+    private String numeroCompra;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataCompra = LocalDate.now();

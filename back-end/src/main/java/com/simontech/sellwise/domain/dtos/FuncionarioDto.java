@@ -3,7 +3,6 @@ package com.simontech.sellwise.domain.dtos;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simontech.sellwise.domain.Contato;
@@ -56,20 +55,6 @@ public class FuncionarioDto {
         this.dataNascimento = funcionario.getDataNascimento();
         this.userFuncionario = funcionario.getUserFuncionario();
         this.status = funcionario.isStatus();
-    }
-
-    public FuncionarioDto(Optional<Funcionario> funcionario) {
-        if (funcionario.isPresent()) {
-            this.idFuncionario = funcionario.get().getIdPessoa();
-            this.nome = funcionario.get().getNome();
-            this.cpf = funcionario.get().getCpf();
-            this.endereco = funcionario.get().getEndereco();
-            this.contatos = funcionario.get().getContatos();
-            this.dataCadastro = funcionario.get().getDataCadastro();
-            this.dataNascimento = funcionario.get().getDataNascimento();
-            this.userFuncionario = funcionario.get().getUserFuncionario();
-            this.status = funcionario.get().isStatus();
-        }
     }
 
     public Integer getIdFuncionario() {

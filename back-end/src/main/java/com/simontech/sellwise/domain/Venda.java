@@ -34,7 +34,7 @@ public class Venda {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idVenda;
-    private Integer numeroVenda;
+    private String numeroVenda;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataVenda = LocalDate.now();

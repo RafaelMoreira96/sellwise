@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -270,7 +271,7 @@ public class DBService {
         venda1.setFuncionario(funcionario);
         venda1.setFormaPagamento(formaPagamento);
         venda1.setItens(itensVenda);
-        venda1.setNumeroVenda(1);
+        venda1.setNumeroVenda(UUID.randomUUID().toString());
         venda1.setStatus(StatusVenda.FINALIZADO);
 
         for (ItemVenda itemVenda : itensVenda) {
@@ -327,7 +328,7 @@ public class DBService {
         compra1.setFornecedor(fornecedor);
         compra1.setDataCompra(LocalDate.now());
         compra1.setItens(itensCompra);
-        compra1.setNumeroCompra(1);
+        compra1.setNumeroCompra(UUID.randomUUID().toString());
         compra1.setFuncionario(funcionario);
         compra1.setStatus(StatusCompra.FINALIZADO);
 
