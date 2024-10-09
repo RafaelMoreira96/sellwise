@@ -4,24 +4,14 @@ import java.util.Optional;
 import com.simontech.sellwise.domain.Produto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 
 @Schema(name = "Produto DTO", description = "Objeto de transferência de dados para Produto")
 public class ProdutoDto {
     private Integer idProduto;
-
-    @NotNull(message = "O campo 'DESCRIÇÃO' precisa ser preenchido")
     private String descricao;
-
-    @NotNull(message = "O campo 'CÓDIGO DE BARRAS' precisa ser preenchido")
     private String codBarras;
-
-    @NotNull(message = "O campo 'PREÇO DE ATACADO' precisa ser preenchido")
     private double precoAtacado;
-
-    @NotNull(message = "O campo 'PREÇO DE VAREJO' precisa ser preenchido")
     private double precoVarejo;
-
     private double qteEstoque;
     private double qteMin;
     private double qteMax;

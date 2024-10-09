@@ -1,0 +1,41 @@
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Product List</h2>
+        <a routerLink="/add-product" class="btn btn-primary mb-3">Add Product</a>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Descricao</th>
+              <th>Cod Barras</th>
+              <th>Preco Atacado</th>
+              <th>Preco Varejo</th>
+              <th>Status</th>
+              <th>Qte Estoque</th>
+              <th>Qte Minimo</th>
+              <th>Qte Max</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let produto of produtos">
+              <td>{{ produto.idProduto }}</td>
+              <td>{{ produto.descricao }}</td>
+              <td>{{ produto.codBarras }}</td>
+              <td>R$ {{ produto.precoVarejo }}</td>
+              <td>R$ {{ produto.precoAtacado }}</td>
+              <td>{{ produto.status? 'Ativo' : 'Inativo' }}</td>
+              <td>{{ produto.qteEstoque }}</td>
+              <td>{{ produto.qteMin }}</td>
+              <td>{{ produto.qteMax }}</td>
+              <td>
+                <a [routerLink]="['/edit-product', produto.idProduto]" class="btn btn-info btn-sm">Edit</a>
+                <button (click)="deleteProduct(produto.idProduto)" class="btn btn-danger btn-sm">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
