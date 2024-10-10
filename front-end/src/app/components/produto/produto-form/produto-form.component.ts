@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProdutoService } from '../../services/produto.service';
+import { ProdutoService } from '../../../services/produto.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Produto } from '../../models/produto';
+import { Produto } from '../../../models/produto';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

@@ -1,0 +1,186 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h2>{{ isEditMode ? "Edit Client" : "Add Client" }}</h2>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="saveClient()">
+            <!-- Dados do Cliente -->
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input
+                type="text"
+                id="nome"
+                class="form-control"
+                [(ngModel)]="client.nome"
+                name="nome"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="cpf">CPF</label>
+              <input
+                type="text"
+                id="cpf"
+                class="form-control"
+                [(ngModel)]="client.cpf"
+                name="cpf"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="dataNascimento">Data de Nascimento</label>
+              <input
+                type="text"
+                id="dataNascimento"
+                class="form-control"
+                [(ngModel)]="client.dataNascimento"
+                name="dataNascimento"
+                mask="00/00/0000"
+                placeholder="dd/mm/yyyy"
+                required
+              />
+            </div>
+
+            <!-- Endereço -->
+            <div class="form-group">
+              <label for="cep">CEP</label>
+              <input
+                type="text"
+                id="cep"
+                class="form-control"
+                [(ngModel)]="client.endereco.cep"
+                name="cep"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="logradouro">Logradouro</label>
+              <input
+                type="text"
+                id="logradouro"
+                class="form-control"
+                [(ngModel)]="client.endereco.logradouro"
+                name="logradouro"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="numero">Número</label>
+              <input
+                type="text"
+                id="numero"
+                class="form-control"
+                [(ngModel)]="client.endereco.numero"
+                name="numero"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="complemento">Complemento</label>
+              <input
+                type="text"
+                id="complemento"
+                class="form-control"
+                [(ngModel)]="client.endereco.complemento"
+                name="complemento"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="bairro">Bairro</label>
+              <input
+                type="text"
+                id="bairro"
+                class="form-control"
+                [(ngModel)]="client.endereco.bairro"
+                name="bairro"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="cidade">Cidade</label>
+              <input
+                type="text"
+                id="cidade"
+                class="form-control"
+                [(ngModel)]="client.endereco.cidade"
+                name="cidade"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="estado">Estado</label>
+              <input
+                type="text"
+                id="estado"
+                class="form-control"
+                [(ngModel)]="client.endereco.estado"
+                name="estado"
+                required
+              />
+            </div>
+
+            <!-- Contatos -->
+            <div
+              class="form-group"
+              *ngFor="let contato of client.contatos; let i = index"
+            >
+              <label for="numero-{{ i }}">Contato {{ i + 1 }} - Número</label>
+              <input
+                type="text"
+                id="numero-{{ i }}"
+                class="form-control"
+                [(ngModel)]="contato.numero"
+                name="numero-{{ i }}"
+                required
+              />
+
+              <label for="tipo-{{ i }}">Tipo</label>
+              <input
+                type="text"
+                id="tipo-{{ i }}"
+                class="form-control"
+                [(ngModel)]="contato.tipo"
+                name="tipo-{{ i }}"
+                required
+              />
+
+              <button
+                type="button"
+                class="btn btn-danger mt-2"
+                (click)="removeContact(i)"
+              >
+                Remover
+              </button>
+            </div>
+            <button
+              type="button"
+              class="btn btn-secondary mt-2"
+              (click)="addContact()"
+            >
+              Adicionar Contato
+            </button>
+
+            <!-- Botões de ação -->
+            <button type="submit" class="btn btn-primary mt-3">
+              {{ isEditMode ? "Update" : "Save" }}
+            </button>
+            <a routerLink="/customers" class="btn btn-secondary ml-2 mt-3"
+              >Cancel</a
+            >
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

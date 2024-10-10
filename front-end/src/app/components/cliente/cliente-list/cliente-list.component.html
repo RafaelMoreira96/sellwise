@@ -1,0 +1,34 @@
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Client List</h2>
+        <a routerLink="/add-customer" class="btn btn-primary mb-3">Add Client</a>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Data Nascimento</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cliente of clientes">
+              <td>{{ cliente.idCliente }}</td>
+              <td>{{ cliente.nome }}</td>
+              <td>{{ cliente.cpf }}</td>
+              <td>{{ cliente.dataNascimento | date }}</td>
+              <td>{{ cliente.status ? 'Ativo' : 'Inativo' }}</td>
+              <td>
+                <a [routerLink]="['/edit-customer', cliente.idCliente]" class="btn btn-info btn-sm">Edit</a>
+                <button (click)="deleteCustomer(cliente.idCliente)" class="btn btn-danger btn-sm">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
