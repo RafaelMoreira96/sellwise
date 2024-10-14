@@ -13,10 +13,13 @@ import localePt from '@angular/common/locales/pt';
 
 import { AppComponent } from './app.component';
 
-import { ProdutoListComponent } from './components/produto/produto-list/produto-list.component';
-import { ProdutoFormComponent } from './components/produto/produto-form/produto-form.component';
-import { ClienteListComponent } from './components/cliente/cliente-list/cliente-list.component';
-import { ClienteFormComponent } from './components/cliente/cliente-form/cliente-form.component';
+import { SidebarComponent } from './components/layout/sidebar/sidebar.component';
+import { HeaderComponent } from './components/layout/header/header.component';
+import { ClienteFormComponent } from './pages/cliente/cliente-form/cliente-form.component';
+import { ClienteListComponent } from './pages/cliente/cliente-list/cliente-list.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ProdutoFormComponent } from './pages/produto/produto-form/produto-form.component';
+import { ProdutoListComponent } from './pages/produto/produto-list/produto-list.component';
 
 registerLocaleData(localePt);
 
@@ -27,6 +30,9 @@ registerLocaleData(localePt);
     ProdutoFormComponent,
     ClienteListComponent,
     ClienteFormComponent,
+    SidebarComponent,
+    HeaderComponent,
+    DashboardComponent
   ],
   imports: [
     CommonModule,

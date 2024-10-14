@@ -1,0 +1,10 @@
+.main-sidebar {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 250px; /* Ajuste o valor de acordo com a largura desejada */
+    overflow-y: auto; /* Para permitir rolagem no sidebar se o conteúdo exceder a tela */
+  }
+  

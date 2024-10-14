@@ -1,0 +1,8 @@
+<svg width="200" height="100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Letra "S" em branco, tamanho maior -->
+  <text x="50" y="75" fill="white" font-size="80px" font-family="Arial">S</text>
+  
+  <!-- Letra "W" em azul claro, ajustada para ficar mais próxima do "S" e também maior -->
+  <text x="110" y="75" fill="#ADD8E6" font-size="80px" font-family="Arial">W</text>
+</svg>
+
