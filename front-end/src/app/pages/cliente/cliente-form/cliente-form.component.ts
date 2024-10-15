@@ -13,8 +13,6 @@ import { DatePipe } from '@angular/common';
   styleUrl: './cliente-form.component.css'
 })
 export class ClienteFormComponent implements OnInit {
-
-
   endereco: Endereco = {
     idEndereco: 0,
     cep: "",

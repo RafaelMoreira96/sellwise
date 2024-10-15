@@ -1,0 +1,44 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Fornecedor List</h2>
+      <a routerLink="/add-supplier" class="btn btn-primary mb-3"
+        >Add Fornecedor</a
+      >
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Razão Social</th>
+            <th>Nome Fantasia</th>
+            <th>CNPJ</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fornecedor of fornecedores">
+            <td>{{ fornecedor.idFornecedor }}</td>
+            <td>{{ fornecedor.razaoSocial }}</td>
+            <td>{{ fornecedor.nomeFantasia }}</td>
+            <td>{{ fornecedor.cnpj }}</td>
+            <td>{{ fornecedor.status ? "Inativo" : "Ativo" }}</td>
+            <td>
+              <a
+                [routerLink]="['/edit-supplier', fornecedor.idFornecedor]"
+                class="btn btn-info btn-sm"
+                ><i class="far fa-edit"></i
+              ></a>
+              <button
+                (click)="deleteFornecedor(fornecedor.idFornecedor)"
+                class="btn btn-danger btn-sm"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

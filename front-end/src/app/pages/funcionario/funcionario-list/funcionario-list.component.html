@@ -1,0 +1,48 @@
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Lista de Funcionários</h2>
+        <a routerLink="/add-employee" class="btn btn-primary mb-3">Adicionar Funcionário</a>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Data de Nascimento</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let funcionario of funcionarios">
+              <td>{{ funcionario.idFuncionario }}</td>
+              <td>{{ funcionario.nome }}</td>
+              <td>{{ funcionario.cpf }}</td>
+              <td>{{ funcionario.dataNascimento | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ funcionario.status ? "Ativo" : "Inativo" }}</td>
+              <td>
+                <a
+                  [routerLink]="['/edit-employee', funcionario.idFuncionario]"
+                  class="btn btn-info btn-sm"
+                  title="Editar"
+                  ><i class="far fa-edit"></i
+                ></a>
+                <button
+                  (click)="deleteEmployee(funcionario.idFuncionario)"
+                  class="btn btn-danger btn-sm"
+                  title="Remover"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="!funcionarios.length" class="alert alert-warning">
+          Nenhum funcionário encontrado.
+        </div>
+      </div>
+    </div>
+  </div>
+  

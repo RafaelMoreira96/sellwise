@@ -1,0 +1,211 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h2>{{ isEditMode ? "Edit Employee" : "Add Employee" }}</h2>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="saveFuncionario()">
+            <!-- Dados do Funcionário -->
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input
+                type="text"
+                id="nome"
+                class="form-control"
+                [(ngModel)]="funcionario.nome"
+                name="nome"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="cpf">CPF</label>
+              <input
+                type="text"
+                id="cpf"
+                class="form-control"
+                [(ngModel)]="funcionario.cpf"
+                name="cpf"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="dataNascimento">Data de Nascimento</label>
+              <input
+                type="text"
+                id="dataNascimento"
+                class="form-control"
+                [(ngModel)]="funcionario.dataNascimento"
+                name="dataNascimento"
+                mask="00/00/0000"
+                placeholder="dd/mm/yyyy"
+                required
+              />
+            </div>
+
+            <!-- Endereço -->
+            <div class="form-group">
+              <label for="cep">CEP</label>
+              <input
+                type="text"
+                id="cep"
+                class="form-control"
+                [(ngModel)]="funcionario.endereco.cep"
+                name="cep"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="logradouro">Logradouro</label>
+              <input
+                type="text"
+                id="logradouro"
+                class="form-control"
+                [(ngModel)]="funcionario.endereco.logradouro"
+                name="logradouro"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="numero">Número</label>
+              <input
+                type="text"
+                id="numero"
+                class="form-control"
+                [(ngModel)]="funcionario.endereco.numero"
+                name="numero"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="complemento">Complemento</label>
+              <input
+                type="text"
+                id="complemento"
+                class="form-control"
+                [(ngModel)]="funcionario.endereco.complemento"
+                name="complemento"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="bairro">Bairro</label>
+              <input
+                type="text"
+                id="bairro"
+                class="form-control"
+                [(ngModel)]="funcionario.endereco.bairro"
+                name="bairro"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="cidade">Cidade</label>
+              <input
+                type="text"
+                id="cidade"
+                class="form-control"
+                [(ngModel)]="funcionario.endereco.cidade"
+                name="cidade"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="estado">Estado</label>
+              <input
+                type="text"
+                id="estado"
+                class="form-control"
+                [(ngModel)]="funcionario.endereco.estado"
+                name="estado"
+                required
+              />
+            </div>
+
+            <!-- Usuario e senha -->
+            <div class="form-group">
+              <label for="usuario">Usuário</label>
+              <input
+                type="text"
+                id="usuario"
+                class="form-control"
+                [(ngModel)]="userFuncionario.username"
+                name="usuario"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="senha">Senha</label>
+              <input
+                type="password"
+                id="senha"
+                class="form-control"
+                [(ngModel)]="userFuncionario.password"
+                name="senha"
+                required
+                minlength="8"
+              />
+            </div>
+
+            <!-- Contatos -->
+            <div
+              class="form-group"
+              *ngFor="let contato of funcionario.contatos; let i = index"
+            >
+              <label for="numero-{{ i }}">Contato {{ i + 1 }} - Número</label>
+              <input
+                type="text"
+                id="numero-{{ i }}"
+                class="form-control"
+                [(ngModel)]="contato.numero"
+                name="numero-{{ i }}"
+                required
+              />
+
+              <label for="tipo-{{ i }}">Tipo</label>
+              <input
+                type="text"
+                id="tipo-{{ i }}"
+                class="form-control"
+                [(ngModel)]="contato.tipo"
+                name="tipo-{{ i }}"
+                required
+              />
+
+              <button
+                type="button"
+                class="btn btn-danger mt-2"
+                (click)="removeContact(i)"
+              >
+                Remover
+              </button>
+            </div>
+            <button
+              type="button"
+              class="btn btn-secondary mt-2"
+              (click)="addContact()"
+            >
+              Adicionar Contato
+            </button>
+
+            <!-- Botões de ação -->
+            <button type="submit" class="btn btn-primary mt-3">
+              {{ isEditMode ? "Update" : "Save" }}
+            </button>
+            <a routerLink="/employees" class="btn btn-secondary ml-2 mt-3"
+              >Cancel</a
+            >
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,6 +6,10 @@ import { ProdutoListComponent } from './pages/produto/produto-list/produto-list.
 import { ProdutoFormComponent } from './pages/produto/produto-form/produto-form.component';
 import { ClienteListComponent } from './pages/cliente/cliente-list/cliente-list.component';
 import { ClienteFormComponent } from './pages/cliente/cliente-form/cliente-form.component';
+import { FornecedorListComponent } from './pages/fornecedor/fornecedor-list/fornecedor-list.component';
+import { FornecedorFormComponent } from './pages/fornecedor/fornecedor-form/fornecedor-form.component';
+import { FuncionarioListComponent } from './pages/funcionario/funcionario-list/funcionario-list.component';
+import { FuncionarioFormComponent } from './pages/funcionario/funcionario-form/funcionario-form.component';
 
 const routes: Routes = [
   {
@@ -19,13 +23,21 @@ const routes: Routes = [
       { path: 'products', component: ProdutoListComponent },
       { path: 'add-product', component: ProdutoFormComponent },
       { path: 'edit-product/:id', component: ProdutoFormComponent, },
-      { path: '', redirectTo: '/products', pathMatch: 'full' },
 
       // Customers routes
       { path: 'customers', component: ClienteListComponent },
       { path: 'add-customer', component: ClienteFormComponent },
       { path: 'edit-customer/:id', component: ClienteFormComponent },
-      { path: '', redirectTo: '/customers', pathMatch: 'full' }
+
+      // Suppliers routes
+      { path: 'suppliers', component: FornecedorListComponent },
+      { path: 'add-supplier', component: FornecedorFormComponent },
+      { path: 'edit-supplier/:id', component: FornecedorFormComponent },
+
+      // Employee routes
+      { path: 'employees', component: FuncionarioListComponent },
+      { path: 'add-employee', component: FuncionarioFormComponent },
+      { path: 'edit-employee/:id', component: FuncionarioFormComponent },
     ]
   }
 

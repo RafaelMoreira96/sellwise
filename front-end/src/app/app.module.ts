@@ -20,6 +20,10 @@ import { ClienteListComponent } from './pages/cliente/cliente-list/cliente-list.
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ProdutoFormComponent } from './pages/produto/produto-form/produto-form.component';
 import { ProdutoListComponent } from './pages/produto/produto-list/produto-list.component';
+import { FornecedorListComponent } from './pages/fornecedor/fornecedor-list/fornecedor-list.component';
+import { FornecedorFormComponent } from './pages/fornecedor/fornecedor-form/fornecedor-form.component';
+import { FuncionarioFormComponent } from './pages/funcionario/funcionario-form/funcionario-form.component';
+import { FuncionarioListComponent } from './pages/funcionario/funcionario-list/funcionario-list.component';
 
 registerLocaleData(localePt);
 
@@ -32,7 +36,11 @@ registerLocaleData(localePt);
     ClienteFormComponent,
     SidebarComponent,
     HeaderComponent,
-    DashboardComponent
+    DashboardComponent,
+    FornecedorListComponent,
+    FornecedorFormComponent,
+    FuncionarioFormComponent,
+    FuncionarioListComponent
   ],
   imports: [
     CommonModule,
