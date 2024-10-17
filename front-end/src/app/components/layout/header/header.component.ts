@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -6,7 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  logout() {
-    console.log('Logout here!')
+
+  constructor(private toast: ToastrService, private router: Router) { }
+  logout(): void {
+    console.log('Logout here!');
+    this.toast.info('Logout!');
+    this.router.navigate(['/login']);
   }
 }

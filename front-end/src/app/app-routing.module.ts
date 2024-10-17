@@ -10,14 +10,24 @@ import { FornecedorListComponent } from './pages/fornecedor/fornecedor-list/forn
 import { FornecedorFormComponent } from './pages/fornecedor/fornecedor-form/fornecedor-form.component';
 import { FuncionarioListComponent } from './pages/funcionario/funcionario-list/funcionario-list.component';
 import { FuncionarioFormComponent } from './pages/funcionario/funcionario-form/funcionario-form.component';
+import { FormaPagamentoListComponent } from './pages/forma-pagamento/forma-pagamento-list/forma-pagamento-list.component';
+import { FormaPagamentoFormComponent } from './pages/forma-pagamento/forma-pagamento-form/forma-pagamento-form.component';
+import { ConfigPageComponent } from './pages/configuration/config-page/config-page.component';
+import { PdvComponent } from './pages/pdv/pdv/pdv.component';
+import { EntradaEstoqueComponent } from './pages/entrada-estoque/entrada-estoque/entrada-estoque.component';
+import { LoginScreenComponent } from './pages/login-screen/login-screen.component';
 
 const routes: Routes = [
+  { path: 'login', component: LoginScreenComponent},
   {
     path: '',
     component: SidebarComponent,
     children: [
       // Dashboard route
       { path: 'dashboard', component: DashboardComponent },
+
+      // Configuration route
+      { path: 'configs', component: ConfigPageComponent },
 
       // Products routes 
       { path: 'products', component: ProdutoListComponent },
@@ -38,6 +48,17 @@ const routes: Routes = [
       { path: 'employees', component: FuncionarioListComponent },
       { path: 'add-employee', component: FuncionarioFormComponent },
       { path: 'edit-employee/:id', component: FuncionarioFormComponent },
+
+      // Payment methods routes
+      { path: 'payment-methods', component: FormaPagamentoListComponent },
+      { path: 'add-payment-method', component: FormaPagamentoFormComponent },
+      { path: 'edit-payment-method/:id', component: FormaPagamentoFormComponent },
+
+      // PDV route
+      { path: 'pdv', component: PdvComponent },
+
+      // Entrada de Estoque route
+      { path: 'stock-entry', component: EntradaEstoqueComponent }
     ]
   }
 

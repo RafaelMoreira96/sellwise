@@ -24,6 +24,13 @@ import { FornecedorListComponent } from './pages/fornecedor/fornecedor-list/forn
 import { FornecedorFormComponent } from './pages/fornecedor/fornecedor-form/fornecedor-form.component';
 import { FuncionarioFormComponent } from './pages/funcionario/funcionario-form/funcionario-form.component';
 import { FuncionarioListComponent } from './pages/funcionario/funcionario-list/funcionario-list.component';
+import { FormaPagamentoListComponent } from './pages/forma-pagamento/forma-pagamento-list/forma-pagamento-list.component';
+import { FormaPagamentoFormComponent } from './pages/forma-pagamento/forma-pagamento-form/forma-pagamento-form.component';
+import { ConfigPageComponent } from './pages/configuration/config-page/config-page.component';
+import { PdvComponent } from './pages/pdv/pdv/pdv.component';
+import { EntradaEstoqueComponent } from './pages/entrada-estoque/entrada-estoque/entrada-estoque.component';
+import { SidebarItemComponent } from './components/layout/sidebar/sidebar-item/sidebar-item.component';
+import { LoginScreenComponent } from './pages/login-screen/login-screen.component';
 
 registerLocaleData(localePt);
 
@@ -40,7 +47,14 @@ registerLocaleData(localePt);
     FornecedorListComponent,
     FornecedorFormComponent,
     FuncionarioFormComponent,
-    FuncionarioListComponent
+    FuncionarioListComponent,
+    FormaPagamentoListComponent,
+    FormaPagamentoFormComponent,
+    ConfigPageComponent,
+    PdvComponent,
+    EntradaEstoqueComponent,
+    SidebarItemComponent,
+    LoginScreenComponent
   ],
   imports: [
     CommonModule,

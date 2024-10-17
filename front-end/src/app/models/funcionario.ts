@@ -6,7 +6,7 @@ export interface Funcionario{
     idFuncionario: number;
     nome: string;
     cpf: string;
-    userFuncionario: UserFuncionario;
+    userFuncionario?: UserFuncionario;
     dataNascimento: any;
     endereco: Endereco;
     contatos: Contato[];
