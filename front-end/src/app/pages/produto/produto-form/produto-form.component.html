@@ -1,51 +1,50 @@
-<div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h2>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h2>
-          </div>
-          <div class="card-body">
-            <form (ngSubmit)="saveProduct()">
-              <div class="form-group">
-                <label for="descricao">Descricao</label>
-                <input type="text" id="descricao" class="form-control" [(ngModel)]="product.descricao" name="descricao" required>
-              </div>
+<form (ngSubmit)="saveProduct()">
 
-              <div class="form-group">
-                <label for="codBarras">Cod Barras</label>
-                <input type="text" id="codBarras" class="form-control" [(ngModel)]="product.codBarras" name="codBarras" required>
-              </div>
-              <div class="form-group">
-                <label for="precoAtacado">Preco Atacado</label>
-                <input type="number" id="precoAtacado" class="form-control" [(ngModel)]="product.precoAtacado" name="precoAtacado" required>
-              </div>
-
-              <div class="form-group">
-                <label for="precoVarejo">Preco Varejo</label>
-                <input type="number" id="precoVarejo" class="form-control" [(ngModel)]="product.precoVarejo" name="precoVarejo" required>
-              </div>
-              
-              <div class="form-group">
-                <label for="qteMin">Qte Minimo</label>
-                <input type="number" id="qteMin" class="form-control" [(ngModel)]="product.qteMin" name="qteMin" required>
-              </div>
-
-              <div class="form-group">
-                <label for="qteMax">Qte Max</label>
-                <input type="number" id="qteMax" class="form-control" [(ngModel)]="product.qteMax" name="qteMax" required>
-              </div>
-
-              <div class="form-group">
-                <label for="qteEstoque">Qte Estoque</label>
-                <input type="number" id="qteEstoque" class="form-control" [(ngModel)]="product.qteEstoque" name="qteEstoque" required>
-              </div>
-
-              <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Save' }}</button>
-              <a routerLink="/products" class="btn btn-secondary ml-2">Cancel</a>
-            </form>
-          </div>
-        </div>
-      </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label for="codBarras">Código de Barras</label>
+      <input type="text" id="codBarras" class="form-control" [(ngModel)]="product.codBarras" name="codBarras" required>
+    </div>
+    <div class="col-8">
+      <label for="descricao">Descrição</label>
+      <input type="text" id="descricao" class="form-control" [(ngModel)]="product.descricao" name="descricao" required>
     </div>
   </div>
+
+  <div class="form-group row">
+    <div class="col-6">
+      <label for="precoAtacado">Preço Atacado</label>
+      <input type="number" id="precoAtacado" class="form-control" [(ngModel)]="product.precoAtacado" name="precoAtacado"
+        required>
+    </div>
+
+    <div class="col-6">
+      <label for="precoVarejo">Preço Varejo</label>
+      <input type="number" id="precoVarejo" class="form-control" [(ngModel)]="product.precoVarejo" name="precoVarejo"
+        required>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-4">
+      <label for="qteMin">Quant. Mínima </label>
+      <input type="number" id="qteMin" class="form-control" [(ngModel)]="product.qteMin" name="qteMin" required>
+    </div>
+
+    <div class="col-4">
+      <label for="qteMax">Quant. Máxima </label>
+      <input type="number" id="qteMax" class="form-control" [(ngModel)]="product.qteMax" name="qteMax" required>
+    </div>
+
+    <div class="col-4">
+      <label for="qteEstoque">Quant. Estoque</label>
+      <input type="number" id="qteEstoque" class="form-control" [(ngModel)]="product.qteEstoque" name="qteEstoque"
+        required>
+    </div>
+  </div>
+
+  <div class="form-group button-group">
+    <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Atualizar' : 'Cadastrar' }}</button>
+    <a (click)="cancel()" class="btn btn-secondary"> Cancelar </a>
+  </div>
+</form>

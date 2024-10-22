@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ProdutoService } from '../../../services/produto.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Produto } from '../../../models/produto';
@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-produto-form',
   templateUrl: './produto-form.component.html',
-  styleUrl: './produto-form.component.css'
+  styleUrls: ['./produto-form.component.css']
 })
 export class ProdutoFormComponent implements OnInit {
   product: Produto = {
@@ -23,6 +23,8 @@ export class ProdutoFormComponent implements OnInit {
   }
 
   isEditMode: boolean = false;
+
+  @Output() onCloseModal = new EventEmitter<void>(); // Evento para fechar modal
 
   constructor(private toast: ToastrService, private produtoService: ProdutoService, private route: ActivatedRoute, private router: Router) { }
 
@@ -41,7 +43,7 @@ export class ProdutoFormComponent implements OnInit {
       this.produtoService.updateProduct(this.product.idProduto, this.product).subscribe(
         () => {
           this.toast.success("Produto atualizado com sucesso!");
-          this.router.navigate(["/products"]);
+          this.onCloseModal.emit(); // Emite o evento para fechar o modal
         },
         (ex) => {
           this.toast.error("Erro ao atualizar produto!");
@@ -52,7 +54,7 @@ export class ProdutoFormComponent implements OnInit {
       this.produtoService.createProduct(this.product).subscribe(
         () => {
           this.toast.success("Produto criado com sucesso!");
-          this.router.navigate(["/products"]);
+          this.onCloseModal.emit(); // Emite o evento para fechar o modal
         },
         (ex) => {
           this.toast.error("Erro ao cadastrar produto!");
@@ -62,4 +64,7 @@ export class ProdutoFormComponent implements OnInit {
     }
   }
 
+  cancel(): void {
+    this.onCloseModal.emit(); // Emite o evento para fechar o modal quando cancelar
+  }
 }

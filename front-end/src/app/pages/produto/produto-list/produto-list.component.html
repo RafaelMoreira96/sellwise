@@ -1,8 +1,10 @@
-<div class="container mt-5">
+<div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2>Product List</h2>
-      <a routerLink="/add-product" class="btn btn-primary mb-3">Add Product</a>
+      <h2> Listagem de produtos </h2>
+      <button (click)="openModal()" class="btn btn-primary mb-3">
+        Adicionar (<i class="fas fa-plus"></i>)
+      </button>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -23,28 +25,44 @@
             <td>{{ produto.idProduto }}</td>
             <td>{{ produto.descricao }}</td>
             <td>{{ produto.codBarras }}</td>
-            <td>R$ {{ produto.precoVarejo }}</td>
-            <td>R$ {{ produto.precoAtacado }}</td>
+            <td>R$ {{ produto.precoAtacado.toFixed(2) }}</td>
+            <td>R$ {{ produto.precoVarejo.toFixed(2) }}</td>
             <td>{{ produto.status ? "Ativo" : "Inativo" }}</td>
             <td>{{ produto.qteEstoque }}</td>
             <td>{{ produto.qteMin }}</td>
             <td>{{ produto.qteMax }}</td>
             <td>
-              <a
-                [routerLink]="['/edit-product', produto.idProduto]"
-                class="btn btn-info btn-sm"
-                ><i class="far fa-edit"></i
-              ></a>
-              <button
-                (click)="deleteProduct(produto.idProduto)"
-                class="btn btn-danger btn-sm"
-              >
+              <a [routerLink]="['/edit-product', produto.idProduto]" class="btn btn-info btn-sm">
+                <i class="far fa-edit"></i>
+              </a>
+              <button (click)="deleteProduct(produto.idProduto)" class="btn btn-danger btn-sm">
                 <i class="fas fa-trash-alt"></i>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop escuro, clicável para fechar o modal -->
+<div class="modal-backdrop fade show" *ngIf="isModalOpen" (click)="closeModal()"></div>
+
+<!-- Modal centralizado horizontal e verticalmente -->
+<div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalOpen"
+  [style.display]="isModalOpen ? 'block' : 'none'" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ isEditMode ? 'Editar produto existente' : 'Adicionar novo produto' }}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-produto-form (onCloseModal)="onModalClose()" (onSave)="reloadProducts()"></app-produto-form>
+      </div>
     </div>
   </div>
 </div>

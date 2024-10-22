@@ -74,16 +74,14 @@ export class DashboardComponent implements OnInit {
 
     this.vendaService.getFiveLastVendas().subscribe((data: any) => {
       if (Array.isArray(data)) {
-        // O retorno já está no formato correto para VendaInfo
         this.itens_venda_info = data.map((venda: VendaInfo) => ({
           idVenda: venda.idVenda,
-          numeroVenda: venda.numeroVenda || '', // Assuming numeroVenda is optional
+          numeroVenda: venda.numeroVenda || '', 
           dataVenda: venda.dataVenda,
           valorVenda: venda.valorVenda,
           status: venda.status
         }));
       } else if (data && Array.isArray(data.lastVendas)) {
-        // O retorno está no formato de lastVendas, mas as propriedades são compatíveis com VendaInfo
         this.itens_venda_info = data.lastVendas.map((venda: VendaInfo) => ({
           idVenda: venda.idVenda,
           numeroVenda: venda.numeroVenda,
@@ -93,8 +91,6 @@ export class DashboardComponent implements OnInit {
         }));
       }
     });
-    
-
   }
 
   updateCardsInfo() {

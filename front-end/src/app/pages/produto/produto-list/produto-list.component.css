@@ -1,0 +1,25 @@
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Fundo escuro com opacidade */
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 255);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-dialog-centered-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Altura mínima para ocupar toda a tela */
+  }
+  
+  .modal-dialog {
+    margin: 0 auto; /* Garante que o modal esteja centralizado no eixo X */
+    max-width: 500px; /* Defina um tamanho máximo para o modal, se necessário */
+    width: 100%; /* Garante que o modal respeite o tamanho da tela */
+  }
+  
