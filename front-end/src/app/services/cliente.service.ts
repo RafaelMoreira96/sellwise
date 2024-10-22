@@ -29,4 +29,9 @@ export class ClienteService {
   deleteClient(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  // funções adicionais
+  getFiveLastClientes(): any {
+    return this.http.get<any>(`${this.baseUrl}/catchLastAddedClientes`);
+  }
 }

@@ -31,6 +31,8 @@ import { PdvComponent } from './pages/pdv/pdv/pdv.component';
 import { EntradaEstoqueComponent } from './pages/entrada-estoque/entrada-estoque/entrada-estoque.component';
 import { SidebarItemComponent } from './components/layout/sidebar/sidebar-item/sidebar-item.component';
 import { LoginScreenComponent } from './pages/login-screen/login-screen.component';
+import { DashboardCardComponent } from './components/dashboard-card/dashboard-card.component';
+import { DashboardClienteItemComponent } from './components/dashboard-cliente-item/dashboard-cliente-item.component';
 
 registerLocaleData(localePt);
 
@@ -54,7 +56,9 @@ registerLocaleData(localePt);
     PdvComponent,
     EntradaEstoqueComponent,
     SidebarItemComponent,
-    LoginScreenComponent
+    LoginScreenComponent,
+    DashboardCardComponent,
+    DashboardClienteItemComponent
   ],
   imports: [
     CommonModule,

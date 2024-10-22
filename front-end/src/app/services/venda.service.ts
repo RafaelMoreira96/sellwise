@@ -24,4 +24,8 @@ export class VendaService {
   deleteVenda(id: number): any {
     return this.http.put(`${this.baseUrl}/${id}`, {});
   }
+
+  getDashboardInfo(): any {
+    return this.http.get<any>(`${this.baseUrl}/dashboard-venda-info`);
+  }
 }
