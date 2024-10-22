@@ -32,9 +32,9 @@
             <td>{{ produto.qteMin }}</td>
             <td>{{ produto.qteMax }}</td>
             <td>
-              <a [routerLink]="['/edit-product', produto.idProduto]" class="btn btn-info btn-sm">
+              <button (click)="editProduct(produto.idProduto)" class="btn btn-info btn-sm">
                 <i class="far fa-edit"></i>
-              </a>
+              </button>
               <button (click)="deleteProduct(produto.idProduto)" class="btn btn-danger btn-sm">
                 <i class="fas fa-trash-alt"></i>
               </button>
@@ -46,13 +46,11 @@
   </div>
 </div>
 
-<!-- Backdrop escuro, clicável para fechar o modal -->
 <div class="modal-backdrop fade show" *ngIf="isModalOpen" (click)="closeModal()"></div>
-
-<!-- Modal centralizado horizontal e verticalmente -->
 <div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalOpen"
   [style.display]="isModalOpen ? 'block' : 'none'" aria-modal="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document" (click)="$event.stopPropagation()">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
+    (click)="$event.stopPropagation()">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">{{ isEditMode ? 'Editar produto existente' : 'Adicionar novo produto' }}</h5>
@@ -61,7 +59,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-produto-form (onCloseModal)="onModalClose()" (onSave)="reloadProducts()"></app-produto-form>
+        <app-produto-form [idProduto]="produtoSelecionado" (onCloseModal)="onModalClose()" (onSave)="reloadProducts()">
+        </app-produto-form>
       </div>
     </div>
   </div>

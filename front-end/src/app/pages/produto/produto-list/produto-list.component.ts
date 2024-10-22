@@ -11,30 +11,19 @@ import { ProdutoService } from '../../../services/produto.service';
 export class ProdutoListComponent implements OnInit {
   isModalOpen = false;
   isEditMode = false;
-
   produtos: Produto[] = [];
+  produtoSelecionado: number | null = null;
 
   constructor(private toastr: ToastrService, private produtoService: ProdutoService) { }
-
-  openModal() {
-    this.isEditMode = false; // Muda para true se você quiser editar um produto
-    this.isModalOpen = true; // Abre o modal
-    document.body.classList.add('modal-open'); // Adiciona a classe para evitar scroll
-  }
-
-  closeModal() {
-    this.isModalOpen = false; // Fecha o modal
-    document.body.classList.remove('modal-open'); // Remove a classe
-  }
 
   reloadProducts() {
     console.log('Lista de produtos recarregada.');
     this.produtoService.getAllProducts().subscribe(data => {
-      this.produtos = data; // Atualiza a lista de produtos
+      this.produtos = data; 
     });
-    this.closeModal(); // Fecha o modal após salvar
+    this.closeModal(); 
   }
-  
+
   ngOnInit(): void {
     this.produtoService.getAllProducts().subscribe(data => {
       this.produtos = data;
@@ -48,11 +37,29 @@ export class ProdutoListComponent implements OnInit {
     });
   }
 
-  editProduct(product: Produto): void {
-    this.isEditMode = true;
-    this.openModal();
+  editProduct(idProduto: number): void {
+    this.openModal(idProduto);
   }
 
+  openModal(idProduto?: number) {
+    if (idProduto) {
+      console.log('Editando produto com id:', idProduto);
+      this.isEditMode = true; 
+      this.produtoSelecionado = idProduto;
+      this.isModalOpen = true; 
+      document.body.classList.add('modal-open'); 
+    } else {
+      this.isEditMode = false;
+      this.produtoSelecionado = null;
+      this.isModalOpen = true;
+      document.body.classList.add('modal-open');
+    }
+  }
+
+  closeModal() {
+    this.isModalOpen = false; 
+    document.body.classList.remove('modal-open'); 
+  }
   onModalClose(): void {
     this.closeModal();
   }
