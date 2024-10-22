@@ -28,4 +28,8 @@ export class VendaService {
   getDashboardInfo(): any {
     return this.http.get<any>(`${this.baseUrl}/dashboard-venda-info`);
   }
+
+  getFiveLastVendas(): any {
+    return this.http.get<any>(`${this.baseUrl}/five-last-vendas`);
+  }
 }

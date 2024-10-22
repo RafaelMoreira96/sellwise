@@ -1,0 +1,39 @@
+<table class="table align-items-center mb-0">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">ID da Venda</th>
+            <th scope="col" class="text-end">Data da Venda</th>
+            <th scope="col" class="text-end">Valor Total</th>
+            <th scope="col" class="text-end">Status</th>
+            <th scope="col" class="text-end">Detalhes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of vendas">
+            <td>
+                <button *ngIf="item.status === 'CANCELADO'" class="btn btn-icon btn-round btn-danger btn-sm me-2">
+                    <i class="fa fa-times"></i>
+                </button>
+                <button *ngIf="item.status === 'FINALIZADO'" class="btn btn-icon btn-round btn-success btn-sm me-2">
+                    <i class="fa fa-check"></i>
+                </button>
+                {{ item.idVenda }}
+            </td>
+            <td class="text-end">
+                {{ item.dataVenda }}
+            </td>
+            <td class="text-end">
+                R$ {{ item.valorVenda.toFixed(2) }}
+            </td>
+            <td class="text-end">
+                <span *ngIf="item.status === 'CANCELADO'" class="badge badge-danger">Cancelada</span>
+                <span *ngIf="item.status === 'FINALIZADO'" class="badge badge-success">Finalizada</span>
+            </td>
+            <td class="text-end">
+                <button class="btn btn-icon btn-round btn-success btn-sm me-2">
+                    <i class="fa fa-check"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

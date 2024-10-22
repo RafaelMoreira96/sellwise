@@ -16,14 +16,24 @@ interface ClienteItem {
   dataCadastro: string;
 }
 
+interface VendaInfo {
+  idVenda: number;
+  numeroVenda: string;
+  dataVenda: string;
+  valorVenda: number;
+  status: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
   cards_info: CardInfo[] = [];
   itens_cliente_info: ClienteItem[] = [];
+  itens_venda_info: VendaInfo[] = [];
 
   quantidade_vendas_hoje = 0;
   valor_vendas_hoje = 0.0;
@@ -61,6 +71,30 @@ export class DashboardComponent implements OnInit {
         }));
       }
     });
+
+    this.vendaService.getFiveLastVendas().subscribe((data: any) => {
+      if (Array.isArray(data)) {
+        // O retorno já está no formato correto para VendaInfo
+        this.itens_venda_info = data.map((venda: VendaInfo) => ({
+          idVenda: venda.idVenda,
+          numeroVenda: venda.numeroVenda || '', // Assuming numeroVenda is optional
+          dataVenda: venda.dataVenda,
+          valorVenda: venda.valorVenda,
+          status: venda.status
+        }));
+      } else if (data && Array.isArray(data.lastVendas)) {
+        // O retorno está no formato de lastVendas, mas as propriedades são compatíveis com VendaInfo
+        this.itens_venda_info = data.lastVendas.map((venda: VendaInfo) => ({
+          idVenda: venda.idVenda,
+          numeroVenda: venda.numeroVenda,
+          dataVenda: venda.dataVenda,
+          valorVenda: venda.valorVenda,
+          status: venda.status
+        }));
+      }
+    });
+    
+
   }
 
   updateCardsInfo() {
@@ -70,6 +104,7 @@ export class DashboardComponent implements OnInit {
     this.cards_info.push({ icon: 'fas fa-truck-loading', category: 'Compras realizadas', title: this.quantidade_compras_hoje });
     this.cards_info.push({ icon: 'fas fa-dollar-sign', category: 'Valor saída ($)', title: this.valor_compras_hoje });
   }
-
-
+  reload() {
+    console.log('reload');
+  }
 }
