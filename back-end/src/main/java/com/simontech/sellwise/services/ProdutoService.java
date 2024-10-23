@@ -28,8 +28,8 @@ public class ProdutoService {
     public List<Produto> findAll() {
         List<Produto> listProdutosDB = repository.findAll();
         List<Produto> listActiveProdutos = new ArrayList<>();
-        for(Produto produto: listProdutosDB){
-            if(produto.isStatus() == true){
+        for (Produto produto : listProdutosDB) {
+            if (produto.isStatus() == true) {
                 listActiveProdutos.add(produto);
             }
         }
@@ -37,7 +37,7 @@ public class ProdutoService {
         return listActiveProdutos;
     }
 
-    public Produto create(@Valid ProdutoDto produtoDto){
+    public Produto create(@Valid ProdutoDto produtoDto) {
         checkBarCode(produtoDto.getCodBarras());
 
         Produto produto = new Produto();
@@ -51,13 +51,15 @@ public class ProdutoService {
         produto.setQteMax(produtoDto.getQteMax());
         produto.setStatus(true);
 
-        return repository.save(produto);
+        Produto savedProduto = repository.save(produto);
+        
+        return savedProduto;
     }
 
-    public Produto update(Integer idProduto, @Valid ProdutoDto produtoDto){
+    public Produto update(Integer idProduto, @Valid ProdutoDto produtoDto) {
         Produto produtoDB = findById(idProduto);
 
-        if(!produtoDB.getCodBarras().equals(produtoDto.getCodBarras())){
+        if (!produtoDB.getCodBarras().equals(produtoDto.getCodBarras())) {
             checkBarCode(produtoDto.getCodBarras());
         }
 
@@ -72,16 +74,16 @@ public class ProdutoService {
         return repository.save(produtoDB);
     }
 
-    public void delete(Integer idProduto){
+    public void delete(Integer idProduto) {
         Produto produto = findById(idProduto);
         produto.setStatus(false);
         repository.save(produto);
     }
 
     // Funções auxiliares
-    private void checkBarCode(String barcode){
+    private void checkBarCode(String barcode) {
         Optional<Produto> optionalProduto = repository.findByCodBarras(barcode);
-        if(optionalProduto.isPresent()){
+        if (optionalProduto.isPresent()) {
             throw new DataIntegrityViolationException("Código de barras já cadastrado.");
         }
     }

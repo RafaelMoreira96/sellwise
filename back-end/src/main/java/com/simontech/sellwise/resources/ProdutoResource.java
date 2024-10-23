@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.simontech.sellwise.domain.Produto;
 import com.simontech.sellwise.domain.dtos.ProdutoDto;
 import com.simontech.sellwise.services.ProdutoService;
@@ -52,14 +51,14 @@ public class ProdutoResource {
         return ResponseEntity.created(uri).body(new ProdutoDto(produto));
     }
 
-    @Operation(summary = "Atualiza um funcionário", description = "Atualiza um funcionário a partir do ID.")
+    @Operation(summary = "Atualiza um produto", description = "Atualiza um produto a partir do ID.")
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProdutoDto> update(@PathVariable Integer id, @RequestBody ProdutoDto produtoDto) {
         Produto produto = service.update(id, produtoDto);
         return ResponseEntity.ok().body(new ProdutoDto(produto));
     }
 
-    @Operation(summary = "Deleta um funcionario", description = "Deleta um funcionario a partir do ID.")
+    @Operation(summary = "Deleta um produto", description = "Deleta um produto a partir do ID.")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);

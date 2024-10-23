@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Produto } from '../../../models/produto';
 import { ProdutoService } from '../../../services/produto.service';
+import { ProdutoFormComponent } from '../produto-form/produto-form.component';
 
 @Component({
   selector: 'app-produto-list',
@@ -14,14 +15,15 @@ export class ProdutoListComponent implements OnInit {
   produtos: Produto[] = [];
   produtoSelecionado: number | null = null;
 
+  @ViewChild(ProdutoFormComponent) produtoFormComponent!: ProdutoFormComponent;
+
   constructor(private toastr: ToastrService, private produtoService: ProdutoService) { }
 
   reloadProducts() {
-    console.log('Lista de produtos recarregada.');
     this.produtoService.getAllProducts().subscribe(data => {
-      this.produtos = data; 
+      this.produtos = data;
     });
-    this.closeModal(); 
+    this.closeModal();
   }
 
   ngOnInit(): void {
@@ -39,24 +41,27 @@ export class ProdutoListComponent implements OnInit {
     this.openModal(idProduto);
   }
 
-  openModal(idProduto?: number) {
+  openModal(idProduto?: number): void {
     if (idProduto) {
-      console.log('Editando produto com id:', idProduto);
       this.isEditMode = true; 
       this.produtoSelecionado = idProduto;
+
+      // Força o carregamento do produto sempre que editar
+      this.produtoFormComponent.loadProduct(idProduto);
     } else {
       this.isEditMode = false;
       this.produtoSelecionado = null;
+      this.produtoFormComponent.clearForm(); // Limpa o formulário para um novo produto
     }
-    this.isModalOpen = true; 
+    this.isModalOpen = true;
     document.body.classList.add('modal-open');
   }
 
-  closeModal() {
-    this.isModalOpen = false; 
-    document.body.classList.remove('modal-open'); 
+  closeModal(): void {
+    this.isModalOpen = false;
+    document.body.classList.remove('modal-open');
   }
-  
+
   onModalClose(): void {
     this.reloadProducts();
     this.closeModal();
