@@ -45,9 +45,8 @@ public class Funcionario extends Pessoa {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataCadastro = LocalDate.now();
-
     private boolean status = true;
-
+    
     @Enumerated(EnumType.STRING)
     private NivelAutenticacao nivelAutenticacao;
 }

@@ -49,7 +49,7 @@ public class Venda {
     private Funcionario funcionario;
 
     @OneToMany
-    private List<ItemVenda> itens = new ArrayList<>();
+    private List<ItemVenda> itensVenda = new ArrayList<>();
 
     private double valorVenda;
 

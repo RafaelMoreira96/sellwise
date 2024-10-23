@@ -36,7 +36,7 @@ public class VendaDto {
         this.status = venda.getStatus();
         this.clienteId = venda.getCliente().getIdPessoa();
         this.funcionarioId = venda.getFuncionario().getIdPessoa();
-        this.itens = venda.getItens();
+        this.itens = venda.getItensVenda();
         this.valorVenda = venda.getValorVenda();
         this.formaPagamentoId = venda.getFormaPagamento().getIdFormaPagamento();
     }
@@ -49,7 +49,7 @@ public class VendaDto {
             this.status = venda.get().getStatus();
             this.clienteId = venda.get().getCliente().getIdPessoa();
             this.funcionarioId = venda.get().getFuncionario().getIdPessoa();
-            this.itens = venda.get().getItens();
+            this.itens = venda.get().getItensVenda();
             this.valorVenda = venda.get().getValorVenda();
             this.formaPagamentoId = venda.get().getFormaPagamento().getIdFormaPagamento();
         }

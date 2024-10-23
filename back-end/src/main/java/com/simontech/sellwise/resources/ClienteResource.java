@@ -3,6 +3,7 @@ package com.simontech.sellwise.resources;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -66,5 +67,11 @@ public class ClienteResource {
     public ResponseEntity<ClienteDto> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Busca cinco últimos clientes", description = "Retorna uma lista com os cinco últimos clientes cadastrados que estejam ativos.")
+    @GetMapping(value = "/last-five-added-cliente")
+    public ResponseEntity<Map<String, Object>> getFiveLastClientes(){
+        return ResponseEntity.ok().body(service.getFiveLastClientes());
     }
 }

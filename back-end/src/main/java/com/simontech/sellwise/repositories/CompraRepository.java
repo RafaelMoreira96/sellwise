@@ -15,4 +15,6 @@ public interface CompraRepository extends JpaRepository<Compra, Integer> {
 
     @Query("SELECT v FROM Compra v WHERE v.dataCompra BETWEEN :dataInicial AND :dataFinal AND v.status = 1")
     List<Compra> findCancelComprasByDate(@Param("dataInicial") LocalDate dataInicial, @Param("dataFinal") LocalDate dataFinal);
+
+
 }

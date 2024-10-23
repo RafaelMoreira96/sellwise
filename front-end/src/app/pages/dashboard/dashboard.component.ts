@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
 
     this.compraService.getDashboardInfo().subscribe((data: any) => {
       this.quantidade_compras_hoje = data.quantidadeCompras;
-      this.valor_compras_hoje = data.valorDasCompras;
+      this.valor_compras_hoje = data.totalValorCompras;
       this.updateCardsInfo();
     });
 

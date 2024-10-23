@@ -33,7 +33,7 @@ import { SidebarItemComponent } from './components/layout/sidebar/sidebar-item/s
 import { LoginScreenComponent } from './pages/login-screen/login-screen.component';
 import { DashboardCardComponent } from './components/dashboard-card/dashboard-card.component';
 import { DashboardClienteItemComponent } from './components/dashboard-cliente-item/dashboard-cliente-item.component';
-import { VendaItemListComponent } from './components/dashboard/table-vendas-dashboard/table-vendas-dashboard.component';
+import { TableVendasDashboardComponent } from './components/dashboard/table-vendas-dashboard/table-vendas-dashboard.component';
 
 registerLocaleData(localePt);
 
@@ -60,7 +60,7 @@ registerLocaleData(localePt);
     LoginScreenComponent,
     DashboardCardComponent,
     DashboardClienteItemComponent,
-    VendaItemListComponent
+    TableVendasDashboardComponent
   ],
   imports: [
     CommonModule,

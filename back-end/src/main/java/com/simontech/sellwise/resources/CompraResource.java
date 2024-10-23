@@ -3,6 +3,7 @@ package com.simontech.sellwise.resources;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.net.URI;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,12 @@ public class CompraResource {
     public ResponseEntity<CompraDto> cancelar(@PathVariable Integer id) {
         service.cancelCompra(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Dashboard de compras", description = "Retorna informações sobre as compras.")
+    @GetMapping(value = "/dashboard-compra-info")
+    public ResponseEntity<Map<String, Object>> dashboardComprasInfo(){
+        Map<String, Object> dashboardComprasInfo = service.dashboardComprasInformation();
+        return ResponseEntity.ok().body(dashboardComprasInfo);
     }
 }

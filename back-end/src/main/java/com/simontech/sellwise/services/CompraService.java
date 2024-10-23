@@ -1,10 +1,13 @@
 package com.simontech.sellwise.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.time.LocalDate;
 import java.util.UUID;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,7 +89,7 @@ public class CompraService {
             itemCompra.setCodBarras(produtoTemporario.get().getCodBarras());
             list.add(itemCompra);
 
-            double quantidadeEstoque = produtoTemporario.get().getQteEstoque() + itemCompra.getQuant();
+            double quantidadeEstoque = produtoTemporario.get().getQteEstoque() + itemCompra.getQuantidade();
             produtoTemporario.get().setQteEstoque(quantidadeEstoque);
 
             produto.setIdProduto(produtoTemporario.get().getIdProduto());
@@ -110,7 +113,7 @@ public class CompraService {
         compra.setItens(list);
 
         for (ItemCompra itemCompra : list) {
-            valorTotal += (itemCompra.getQuant() * itemCompra.getPrecoCompra());
+            valorTotal += (itemCompra.getQuantidade() * itemCompra.getPrecoCompra());
         }
 
         compra.setValorTotal(valorTotal);
@@ -124,7 +127,7 @@ public class CompraService {
         Produto produto = new Produto();
         for (ItemCompra itemCompra : compra.getItens()) {
             Optional<Produto> objTemp = produtoRepository.findById(itemCompra.getIdProduto());
-            double quantidadeEstoque = objTemp.get().getQteEstoque() - itemCompra.getQuant();
+            double quantidadeEstoque = objTemp.get().getQteEstoque() - itemCompra.getQuantidade();
 
             produto.setIdProduto(objTemp.get().getIdProduto());
             produto.setCodBarras(objTemp.get().getCodBarras());
@@ -139,5 +142,17 @@ public class CompraService {
         }
         compra.setStatus(StatusCompra.DEVOLUCAO);
         repository.save(compra);
+    }
+
+    // funções adicionais
+    public Map<String, Object> dashboardComprasInformation(){
+        LocalDate todayDate = LocalDate.now();
+        List<Compra> compras = repository.findByDataCompraBetween(todayDate, todayDate);
+        
+        Map<String, Object> dashboardComprasInfo = new HashMap<>();
+        dashboardComprasInfo.put("quantidadeCompras", compras.size());
+        dashboardComprasInfo.put("totalValorCompras", compras.stream().mapToDouble(Compra::getValorTotal).sum());
+
+        return dashboardComprasInfo;
     }
 }

@@ -1,1 +1,3 @@
-/target
+target/
+kaiadmin/
+.vscode/

@@ -26,7 +26,6 @@ import lombok.ToString;
 public class ItemCompra {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
     private Integer idProduto;
     @NotNull
     private String descricao;
@@ -35,5 +34,5 @@ public class ItemCompra {
     @NotNull
     private double precoCompra;
     @NotNull
-    private double quant;
+    private double quantidade;
 }

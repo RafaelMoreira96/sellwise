@@ -5,6 +5,6 @@ import { Component, Input } from '@angular/core';
   templateUrl: './table-vendas-dashboard.component.html',
   styleUrl: './table-vendas-dashboard.component.css'
 })
-export class VendaItemListComponent {
+export class TableVendasDashboardComponent {
   @Input() vendas: any[] = [];
 }

@@ -1,10 +1,13 @@
 package com.simontech.sellwise.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.time.LocalDate;
 import java.util.UUID;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,16 +74,17 @@ public class VendaService {
         Cliente clienteDB = clienteOptional.orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado!"));
 
         Optional<Funcionario> funcionario = funcionarioRepository.findById(vendaDto.getFuncionarioId());
-        Funcionario funcionarioDB = funcionario.orElseThrow(() -> new ObjectNotFoundException("Funcionario não encontrado!"));
+        Funcionario funcionarioDB = funcionario
+                .orElseThrow(() -> new ObjectNotFoundException("Funcionario não encontrado!"));
 
         Optional<FormaPagamento> formaPagamento = formaPagamentoRepository.findById(vendaDto.getFormaPagamentoId());
-        FormaPagamento formaPagamentoDB = formaPagamento.orElseThrow(() -> new ObjectNotFoundException("Forma de pagamento não encontrada!"));
+        FormaPagamento formaPagamentoDB = formaPagamento
+                .orElseThrow(() -> new ObjectNotFoundException("Forma de pagamento não encontrada!"));
 
         List<ItemVenda> listTemp = vendaDto.getItens();
         List<ItemVenda> list = new ArrayList<>();
         double valorVenda = 0;
-        
-        
+
         for (ItemVenda itemVenda : listTemp) {
             Produto produto = new Produto();
             Optional<Produto> produtoTemporario = produtoRepository.findById(itemVenda.getIdProduto());
@@ -93,7 +97,7 @@ public class VendaService {
             itemVenda.setCodBarras(produtoTemporario.get().getCodBarras());
             list.add(itemVenda);
 
-            double quantidadeEstoque = produtoTemporario.get().getQteEstoque() - itemVenda.getQuant();
+            double quantidadeEstoque = produtoTemporario.get().getQteEstoque() - itemVenda.getQuantidade();
             produtoTemporario.get().setQteEstoque(quantidadeEstoque);
 
             produto.setIdProduto(produtoTemporario.get().getIdProduto());
@@ -116,10 +120,10 @@ public class VendaService {
         venda.setCliente(clienteDB);
         venda.setFuncionario(funcionarioDB);
         venda.setFormaPagamento(formaPagamentoDB);
-        venda.setItens(list);
+        venda.setItensVenda(list);
 
         for (ItemVenda itemVenda : list) {
-            valorVenda += (itemVenda.getQuant() * itemVenda.getPrecoVendido());
+            valorVenda += (itemVenda.getQuantidade() * itemVenda.getPrecoVendido());
         }
 
         venda.setValorVenda(valorVenda);
@@ -131,9 +135,9 @@ public class VendaService {
     public void cancelVenda(Integer id) {
         Venda venda = findById(id);
         Produto produto = new Produto();
-        for (ItemVenda itemVenda : venda.getItens()) {
+        for (ItemVenda itemVenda : venda.getItensVenda()) {
             Optional<Produto> objTemp = produtoRepository.findById(itemVenda.getIdProduto());
-            double quantidadeEstoque = objTemp.get().getQteEstoque() + itemVenda.getQuant();
+            double quantidadeEstoque = objTemp.get().getQteEstoque() + itemVenda.getQuantidade();
 
             produto.setIdProduto(objTemp.get().getIdProduto());
             produto.setCodBarras(objTemp.get().getCodBarras());
@@ -145,9 +149,47 @@ public class VendaService {
             produto.setQteMin(objTemp.get().getQteMin());
 
             produtoRepository.save(produto);
-            itemVenda.getQuant();
+            itemVenda.getQuantidade();
         }
         venda.setStatus(StatusVenda.CANCELADO);
         repository.save(venda);
     }
+
+    // funções adicionais
+    public Map<String, Object> dashboardVendasInformation() {
+        LocalDate todayDate = LocalDate.now();
+        List<Venda> vendas = repository.findByDataVendaBetween(todayDate, todayDate);
+
+        Map<String, Object> dashboardVendasInfo = new HashMap<String, Object>();
+        dashboardVendasInfo.put("quantidadeVendas", vendas.size());
+        dashboardVendasInfo.put("valorDasVendas", vendas.stream().mapToDouble(v -> v.getValorVenda()).sum());//
+
+        return dashboardVendasInfo;
+    }
+
+    public Map<String, Object> findFiveLastVendas() {
+        List<Venda> vendas = repository.findFiveLastVendas();
+
+        int limit = Math.min(vendas.size(), 5);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        List<Map<String, Object>> lastVendasList = new ArrayList<>();
+
+        for (int i = 0; i < limit; i++) {
+            Venda venda = vendas.get(i);
+            Map<String, Object> vendaMap = new HashMap<>();
+            vendaMap.put("idVenda", venda.getIdVenda());
+            vendaMap.put("numeroVenda", venda.getNumeroVenda());
+            vendaMap.put("dataVenda", venda.getDataVenda().format(formatter));
+            vendaMap.put("valorVenda", venda.getValorVenda());
+            vendaMap.put("status", venda.getStatus().toString());
+
+            lastVendasList.add(vendaMap);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("lastVendas", lastVendasList);
+
+        return result;
+    }
+
 }

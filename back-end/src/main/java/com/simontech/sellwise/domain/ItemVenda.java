@@ -37,5 +37,5 @@ public class ItemVenda {
     @NotNull
     private double desconto;
     @NotNull
-    private double quant;
+    private double quantidade;
 }

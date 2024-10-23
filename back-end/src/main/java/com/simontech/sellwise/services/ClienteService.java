@@ -1,7 +1,10 @@
 package com.simontech.sellwise.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,5 +147,21 @@ public class ClienteService {
         if (obj.isPresent() && obj.get().getCpf() != clienteDto.getCpf()) {
             throw new DataIntegrityViolationException("CPF já cadastrado!");
         }
+    }
+
+    public Map<String, Object> getFiveLastClientes() {
+        List<Cliente> listClientes = repository.findLastCliente();
+        List<ClienteDto> listClientesDto = new ArrayList<>();
+        for (Cliente cliente : listClientes) {
+            if (cliente.isStatus() == true) {
+                listClientesDto.add(new ClienteDto(cliente));
+            }
+        }
+        
+        Collections.sort(listClientesDto, Comparator.comparing(ClienteDto::getDataCadastro).reversed());
+        if (listClientesDto.size() < 5) {
+            return Map.of("clientes", listClientesDto.subList(0, listClientesDto.size()));
+        }
+        return Map.of("clientes", listClientesDto.subList(0, 5));
     }
 }

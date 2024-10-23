@@ -32,6 +32,6 @@ export class ClienteService {
 
   // funções adicionais
   getFiveLastClientes(): any {
-    return this.http.get<any>(`${this.baseUrl}/catchLastAddedClientes`);
+    return this.http.get<any>(`${this.baseUrl}/last-five-added-cliente`);
   }
 }
