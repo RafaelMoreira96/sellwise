@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ProdutoService } from '../../../services/produto.service';
 import { Produto } from '../../../models/produto';
 import { ToastrService } from 'ngx-toastr';
@@ -10,9 +10,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ProdutoFormComponent implements OnInit {
   @Input() idProduto: number | null = null;
-  isEditMode: boolean = false; 
   @Output() onCloseModal = new EventEmitter<void>(); 
 
+  isEditMode: boolean = false; 
   produto: Produto = {
     idProduto: 0,
     descricao: "",
@@ -28,9 +28,21 @@ export class ProdutoFormComponent implements OnInit {
   constructor(private toast: ToastrService, private produtoService: ProdutoService) { }
 
   ngOnInit(): void {
+    this.checkEditMode();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['idProduto'] && changes['idProduto'].currentValue !== null) {
+      this.isEditMode = true; 
+      if (this.idProduto !== null) {
+        this.loadProduct(this.idProduto);
+      }
+    }
+  }
+
+  checkEditMode(): void {
     if (this.idProduto) {
       this.isEditMode = true; 
-      console.log('Editando produto com id:', this.idProduto);
       this.loadProduct(this.idProduto);
     }
   }
@@ -49,7 +61,7 @@ export class ProdutoFormComponent implements OnInit {
       this.produtoService.updateProduct(this.produto.idProduto, this.produto).subscribe(
         () => {
           this.toast.success("Produto atualizado com sucesso!");
-          this.onCloseModal.emit();
+          this.onCloseModal.emit(); 
         },
         (ex) => {
           this.toast.error("Erro ao atualizar produto!");

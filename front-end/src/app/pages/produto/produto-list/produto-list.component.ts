@@ -25,9 +25,7 @@ export class ProdutoListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.produtoService.getAllProducts().subscribe(data => {
-      this.produtos = data;
-    });
+    this.reloadProducts();
   }
 
   deleteProduct(idProduto: number): void {
@@ -46,21 +44,21 @@ export class ProdutoListComponent implements OnInit {
       console.log('Editando produto com id:', idProduto);
       this.isEditMode = true; 
       this.produtoSelecionado = idProduto;
-      this.isModalOpen = true; 
-      document.body.classList.add('modal-open'); 
     } else {
       this.isEditMode = false;
       this.produtoSelecionado = null;
-      this.isModalOpen = true;
-      document.body.classList.add('modal-open');
     }
+    this.isModalOpen = true; 
+    document.body.classList.add('modal-open');
   }
 
   closeModal() {
     this.isModalOpen = false; 
     document.body.classList.remove('modal-open'); 
   }
+  
   onModalClose(): void {
+    this.reloadProducts();
     this.closeModal();
   }
 }

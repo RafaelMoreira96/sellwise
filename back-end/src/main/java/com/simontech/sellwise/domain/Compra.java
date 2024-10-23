@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simontech.sellwise.domain.enums.StatusCompra;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -50,7 +51,8 @@ public class Compra {
     private Funcionario funcionario;
 
     @OneToMany
-    private List<ItemCompra> itens = new ArrayList<>();
+    private List<ItemCompra> itensCompra = new ArrayList<>();
+
     private StatusCompra status = StatusCompra.ANDAMENTO;
 
     private double valorTotal;

@@ -25,7 +25,7 @@ public class VendaDto {
 
     private Integer clienteId;
     private Integer funcionarioId;
-    private List<ItemVenda> itens;
+    private List<ItemVenda> itensVenda;
     private double valorVenda;
     private Integer formaPagamentoId;
 
@@ -36,7 +36,7 @@ public class VendaDto {
         this.status = venda.getStatus();
         this.clienteId = venda.getCliente().getIdPessoa();
         this.funcionarioId = venda.getFuncionario().getIdPessoa();
-        this.itens = venda.getItensVenda();
+        this.itensVenda = venda.getItensVenda();
         this.valorVenda = venda.getValorVenda();
         this.formaPagamentoId = venda.getFormaPagamento().getIdFormaPagamento();
     }
@@ -49,7 +49,7 @@ public class VendaDto {
             this.status = venda.get().getStatus();
             this.clienteId = venda.get().getCliente().getIdPessoa();
             this.funcionarioId = venda.get().getFuncionario().getIdPessoa();
-            this.itens = venda.get().getItensVenda();
+            this.itensVenda = venda.get().getItensVenda();
             this.valorVenda = venda.get().getValorVenda();
             this.formaPagamentoId = venda.get().getFormaPagamento().getIdFormaPagamento();
         }
@@ -103,12 +103,12 @@ public class VendaDto {
         this.funcionarioId = funcionarioId;
     }
 
-    public List<ItemVenda> getItens() {
-        return itens;
+    public List<ItemVenda> getItensVenda() {
+        return itensVenda;
     }
 
-    public void setItens(List<ItemVenda> itens) {
-        this.itens = itens;
+    public void setItensVenda(List<ItemVenda> itens) {
+        this.itensVenda = itens;
     }
 
     public double getValorVenda() {

@@ -26,5 +26,5 @@ public class Fornecedor extends Pessoa {
     private String nomeFantasia;
     private String inscricaoEstadual;
     @CNPJ protected String cnpj;
-    private boolean isActive = true;
+    private boolean status = true;
 }

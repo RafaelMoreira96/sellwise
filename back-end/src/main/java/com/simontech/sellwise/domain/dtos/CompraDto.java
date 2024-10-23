@@ -25,7 +25,7 @@ public class CompraDto {
 
     private Integer fornecedorId;
     private Integer funcionarioId;
-    private List<ItemCompra> itens;
+    private List<ItemCompra> itensCompra;
     private double valorTotal;
 
     public CompraDto(Compra compra) {
@@ -35,7 +35,7 @@ public class CompraDto {
         this.status = compra.getStatus();
         this.fornecedorId = compra.getFornecedor().getIdPessoa();
         this.funcionarioId = compra.getFuncionario().getIdPessoa();
-        this.itens = compra.getItens();
+        this.itensCompra = compra.getItensCompra();
         this.valorTotal = compra.getValorTotal();
     }
 
@@ -47,7 +47,7 @@ public class CompraDto {
             this.status = compra.get().getStatus();
             this.fornecedorId = compra.get().getFornecedor().getIdPessoa();
             this.funcionarioId = compra.get().getFuncionario().getIdPessoa();
-            this.itens = compra.get().getItens();
+            this.itensCompra = compra.get().getItensCompra();
             this.valorTotal = compra.get().getValorTotal();
         }
     }
@@ -100,12 +100,12 @@ public class CompraDto {
         this.funcionarioId = funcionarioId;
     }
 
-    public List<ItemCompra> getItens() {
-        return itens;
+    public List<ItemCompra> getItensCompra() {
+        return itensCompra;
     }
 
-    public void setItens(List<ItemCompra> itens) {
-        this.itens = itens;
+    public void setItensCompra(List<ItemCompra> itens) {
+        this.itensCompra = itens;
     }
 
     public double getValorTotal() {

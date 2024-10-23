@@ -152,7 +152,7 @@ public class DBService {
         fornecedor1.setInscricaoEstadual("Teste");
         fornecedor1.setDataCadastro(LocalDate.now());
         fornecedor1.setCnpj("02.315.215/0001-27");
-        fornecedor1.setActive(true);
+        fornecedor1.setStatus(true);
         fornecedor1.setRazaoSocial("Teste");
         fornecedor1
                 .setEndereco(new Endereco(null, "12345-678", "Rua Teste", "123", "complemento de teste", "cidade teste",
@@ -167,7 +167,7 @@ public class DBService {
         fornecedor2.setInscricaoEstadual("Teste 2");
         fornecedor2.setDataCadastro(LocalDate.now());
         fornecedor2.setCnpj("80.984.869/0001-57");
-        fornecedor2.setActive(true);
+        fornecedor2.setStatus(true);
         fornecedor2.setRazaoSocial("Teste 2");
         fornecedor2
                 .setEndereco(new Endereco(null, "65432-111", "Rua Teste 2", "432", "complemento de teste 2",
@@ -325,7 +325,7 @@ public class DBService {
         Compra compra1 = new Compra();
         compra1.setFornecedor(fornecedor);
         compra1.setDataCompra(LocalDate.now());
-        compra1.setItens(itensCompra);
+        compra1.setItensCompra(itensCompra);
         compra1.setNumeroCompra(UUID.randomUUID().toString());
         compra1.setFuncionario(funcionario);
         compra1.setStatus(StatusCompra.FINALIZADO);

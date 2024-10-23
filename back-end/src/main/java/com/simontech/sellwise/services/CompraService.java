@@ -1,38 +1,26 @@
 package com.simontech.sellwise.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.simontech.sellwise.domain.Compra;
-import com.simontech.sellwise.domain.Fornecedor;
-import com.simontech.sellwise.domain.Funcionario;
-import com.simontech.sellwise.domain.ItemCompra;
-import com.simontech.sellwise.domain.Produto;
+import com.simontech.sellwise.domain.*;
 import com.simontech.sellwise.domain.dtos.CompraDto;
 import com.simontech.sellwise.domain.enums.StatusCompra;
-import com.simontech.sellwise.repositories.CompraRepository;
-import com.simontech.sellwise.repositories.FornecedorRepository;
-import com.simontech.sellwise.repositories.FuncionarioRepository;
-import com.simontech.sellwise.repositories.ItemCompraRepository;
-import com.simontech.sellwise.repositories.ProdutoRepository;
+import com.simontech.sellwise.repositories.*;
 import com.simontech.sellwise.services.exceptions.ObjectNotFoundException;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @Service
 public class CompraService {
 
     @Autowired
-    private CompraRepository repository;
+    private CompraRepository compraRepository;
     @Autowired
     private ItemCompraRepository itemCompraRepository;
     @Autowired
@@ -43,12 +31,12 @@ public class CompraService {
     private ProdutoRepository produtoRepository;
 
     public Compra findById(Integer id) {
-        Optional<Compra> compra = repository.findById(id);
-        return compra.orElseThrow(() -> new ObjectNotFoundException("Compra não encontrada! ID: " + id));
+        return compraRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Compra não encontrada! ID: " + id));
     }
 
     public List<Compra> findByDate(LocalDate firstDate, LocalDate secondDate) {
-        List<Compra> compras = repository.findByDataCompraBetween(firstDate, secondDate);
+        List<Compra> compras = compraRepository.findByDataCompraBetween(firstDate, secondDate);
         if (compras.isEmpty()) {
             throw new ObjectNotFoundException("Nenhuma compra encontrada entre " + firstDate + " e " + secondDate);
         }
@@ -56,103 +44,94 @@ public class CompraService {
     }
 
     public List<Compra> findAll() {
-        List<Compra> listDB = repository.findAll();
-        List<Compra> list = new ArrayList<>();
-        for (Compra compra : listDB) {
-            if (compra.getStatus().equals(StatusCompra.FINALIZADO) || compra.getStatus().equals(StatusCompra.ANDAMENTO)) {
-                list.add(compra);
-            }
-        }
-        return list;
+        return compraRepository.findAll().stream()
+                .filter(compra -> compra.getStatus().equals(StatusCompra.FINALIZADO) 
+                               || compra.getStatus().equals(StatusCompra.ANDAMENTO))
+                .collect(Collectors.toList());
     }
 
+    @Transactional
     public Compra create(@Valid CompraDto compraDto) {
-        Optional<Fornecedor> fornecedorOptional = fornecedorRepository.findById(compraDto.getFornecedorId());
-        Fornecedor fornecedorDB = fornecedorOptional.orElseThrow(() -> new ObjectNotFoundException("Fornecedor não encontrado!"));
+        Fornecedor fornecedor = fornecedorRepository.findById(compraDto.getFornecedorId())
+                .orElseThrow(() -> new ObjectNotFoundException("Fornecedor não encontrado!"));
 
-        Optional<Funcionario> funcionario = funcionarioRepository.findById(compraDto.getFuncionarioId());
-        Funcionario funcionarioDB = funcionario.orElseThrow(() -> new ObjectNotFoundException("Funcionario não encontrado!"));
+        Funcionario funcionario = funcionarioRepository.findById(compraDto.getFuncionarioId())
+                .orElseThrow(() -> new ObjectNotFoundException("Funcionario não encontrado!"));
 
-        List<ItemCompra> listTemp = compraDto.getItens();
-        List<ItemCompra> list = new ArrayList<>();
-        double valorTotal = 0;
-
-        for (ItemCompra itemCompra : listTemp) {
-            Produto produto = new Produto();
-            Optional<Produto> produtoTemporario = produtoRepository.findById(itemCompra.getIdProduto());
-
-            if (!produtoTemporario.isPresent()) {
-                throw new ObjectNotFoundException("Produto não encontrado! ID: " + itemCompra.getIdProduto());
-            }
-
-            itemCompra.setDescricao(produtoTemporario.get().getDescricao());
-            itemCompra.setCodBarras(produtoTemporario.get().getCodBarras());
-            list.add(itemCompra);
-
-            double quantidadeEstoque = produtoTemporario.get().getQteEstoque() + itemCompra.getQuantidade();
-            produtoTemporario.get().setQteEstoque(quantidadeEstoque);
-
-            produto.setIdProduto(produtoTemporario.get().getIdProduto());
-            produto.setCodBarras(produtoTemporario.get().getCodBarras());
-            produto.setDescricao(produtoTemporario.get().getDescricao());
-            produto.setPrecoAtacado(produtoTemporario.get().getPrecoAtacado());
-            produto.setPrecoVarejo(produtoTemporario.get().getPrecoVarejo());
-            produto.setQteEstoque(quantidadeEstoque);
-            produto.setQteMax(produtoTemporario.get().getQteMax());
-            produto.setQteMin(produtoTemporario.get().getQteMin());
-
-            produtoRepository.save(produto);
-        }
-
-        itemCompraRepository.saveAll(list);
+        List<ItemCompra> itensCompra = processarItensCompra(compraDto.getItensCompra());
 
         Compra compra = new Compra();
         compra.setDataCompra(LocalDate.now());
-        compra.setFornecedor(fornecedorDB);
-        compra.setFuncionario(funcionarioDB);
-        compra.setItens(list);
-
-        for (ItemCompra itemCompra : list) {
-            valorTotal += (itemCompra.getQuantidade() * itemCompra.getPrecoCompra());
-        }
-
-        compra.setValorTotal(valorTotal);
+        compra.setFornecedor(fornecedor);
+        compra.setFuncionario(funcionario);
+        compra.setItensCompra(itensCompra);
+        compra.setValorTotal(calcularValorTotal(itensCompra));
         compra.setNumeroCompra(UUID.randomUUID().toString());
         compra.setStatus(StatusCompra.FINALIZADO);
-        return repository.save(compra);
+
+        itemCompraRepository.saveAll(itensCompra);
+        return compraRepository.save(compra);
     }
 
+    @Transactional
     public void cancelCompra(Integer id) {
         Compra compra = findById(id);
-        Produto produto = new Produto();
-        for (ItemCompra itemCompra : compra.getItens()) {
-            Optional<Produto> objTemp = produtoRepository.findById(itemCompra.getIdProduto());
-            double quantidadeEstoque = objTemp.get().getQteEstoque() - itemCompra.getQuantidade();
-
-            produto.setIdProduto(objTemp.get().getIdProduto());
-            produto.setCodBarras(objTemp.get().getCodBarras());
-            produto.setDescricao(objTemp.get().getDescricao());
-            produto.setPrecoAtacado(objTemp.get().getPrecoAtacado());
-            produto.setPrecoVarejo(objTemp.get().getPrecoVarejo());
-            produto.setQteEstoque(quantidadeEstoque);
-            produto.setQteMax(objTemp.get().getQteMax());
-            produto.setQteMin(objTemp.get().getQteMin());
-
-            produtoRepository.save(produto);
+        for (ItemCompra itemCompra : compra.getItensCompra()) {
+            atualizarEstoque(itemCompra.getIdProduto(), -itemCompra.getQuantidade());
         }
         compra.setStatus(StatusCompra.DEVOLUCAO);
-        repository.save(compra);
+        compraRepository.save(compra);
     }
 
-    // funções adicionais
-    public Map<String, Object> dashboardComprasInformation(){
+    public Map<String, Object> dashboardComprasInformation() {
         LocalDate todayDate = LocalDate.now();
-        List<Compra> compras = repository.findByDataCompraBetween(todayDate, todayDate);
-        
-        Map<String, Object> dashboardComprasInfo = new HashMap<>();
-        dashboardComprasInfo.put("quantidadeCompras", compras.size());
-        dashboardComprasInfo.put("totalValorCompras", compras.stream().mapToDouble(Compra::getValorTotal).sum());
+        List<Compra> compras = compraRepository.findByDataCompraBetween(todayDate, todayDate);
 
-        return dashboardComprasInfo;
+        Map<String, Object> dashboardInfo = new HashMap<>();
+        dashboardInfo.put("quantidadeCompras", compras.size());
+        dashboardInfo.put("totalValorCompras", compras.stream()
+                .mapToDouble(Compra::getValorTotal).sum());
+
+        return dashboardInfo;
+    }
+
+    private List<ItemCompra> processarItensCompra(List<ItemCompra> itensCompraDto) {
+        List<ItemCompra> itensCompra = new ArrayList<>();
+
+        for (ItemCompra itemCompraDto : itensCompraDto) {
+            Produto produto = produtoRepository.findById(itemCompraDto.getIdProduto())
+                    .orElseThrow(() -> new ObjectNotFoundException("Produto não encontrado! ID: " + itemCompraDto.getIdProduto()));
+
+            atualizarProdutoComEstoque(itemCompraDto, produto);
+            itensCompra.add(itemCompraDto);
+        }
+
+        return itensCompra;
+    }
+
+    private void atualizarProdutoComEstoque(ItemCompra itemCompra, Produto produto) {
+        itemCompra.setDescricao(produto.getDescricao());
+        itemCompra.setCodBarras(produto.getCodBarras());
+
+        double novaQuantidadeEstoque = produto.getQteEstoque() + itemCompra.getQuantidade();
+        produto.setQteEstoque(novaQuantidadeEstoque);
+
+        produtoRepository.save(produto);
+    }
+
+    private void atualizarEstoque(Integer produtoId, double quantidade) {
+        Produto produto = produtoRepository.findById(produtoId)
+                .orElseThrow(() -> new ObjectNotFoundException("Produto não encontrado! ID: " + produtoId));
+
+        double novaQuantidadeEstoque = produto.getQteEstoque() + quantidade;
+        produto.setQteEstoque(novaQuantidadeEstoque);
+
+        produtoRepository.save(produto);
+    }
+
+    private double calcularValorTotal(List<ItemCompra> itensCompra) {
+        return itensCompra.stream()
+                .mapToDouble(item -> item.getQuantidade() * item.getPrecoCompra())
+                .sum();
     }
 }

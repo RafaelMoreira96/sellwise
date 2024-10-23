@@ -41,7 +41,7 @@ public class FornecedorDto {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataCadastro = LocalDate.now();
 
-    private boolean isActive = true;
+    private boolean status = true;
 
     public FornecedorDto() {
         super();
@@ -56,7 +56,7 @@ public class FornecedorDto {
         this.endereco = fornecedor.getEndereco();
         this.contatos = fornecedor.getContatos();
         this.dataCadastro = fornecedor.getDataCadastro();
-        this.isActive = fornecedor.isActive();
+        this.status = fornecedor.isStatus();
     }
 
     public FornecedorDto(Optional<Fornecedor> fornecedor) {
@@ -69,7 +69,7 @@ public class FornecedorDto {
             this.endereco = fornecedor.get().getEndereco();
             this.contatos = fornecedor.get().getContatos();
             this.dataCadastro = fornecedor.get().getDataCadastro();
-            this.isActive = fornecedor.get().isActive();
+            this.status = fornecedor.get().isStatus();
         }
     }
 
@@ -137,11 +137,11 @@ public class FornecedorDto {
         this.dataCadastro = dataCadastro;
     }
 
-    public boolean isActive() {
-        return this.isActive;
+    public boolean isStatus() {
+        return this.status;
     }
 
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

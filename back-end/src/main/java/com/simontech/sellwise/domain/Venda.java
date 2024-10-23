@@ -38,8 +38,7 @@ public class Venda {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataVenda = LocalDate.now();
-    private StatusVenda status = StatusVenda.ANDAMENTO;
-
+    
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
@@ -50,7 +49,7 @@ public class Venda {
 
     @OneToMany
     private List<ItemVenda> itensVenda = new ArrayList<>();
-
+    private StatusVenda status = StatusVenda.ANDAMENTO;
     private double valorVenda;
 
     @ManyToOne

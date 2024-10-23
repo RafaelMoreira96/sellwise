@@ -35,4 +35,5 @@ public class ItemCompra {
     private double precoCompra;
     @NotNull
     private double quantidade;
+    
 }

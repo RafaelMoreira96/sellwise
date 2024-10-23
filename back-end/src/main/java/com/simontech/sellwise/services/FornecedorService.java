@@ -37,7 +37,7 @@ public class FornecedorService {
         List<Fornecedor> listFornecedoresDB = repository.findAll();
         List<Fornecedor> listActiveFornecedores = new ArrayList<>();
         for (Fornecedor fornecedor : listFornecedoresDB) {
-            if (fornecedor.isActive() == true) {
+            if (fornecedor.isStatus() == true) {
                 listActiveFornecedores.add(fornecedor);
             }
         }
@@ -63,7 +63,7 @@ public class FornecedorService {
         fornecedor.setRazaoSocial(fornecedorDto.getRazaoSocial());
         fornecedor.setNomeFantasia(fornecedorDto.getNomeFantasia());
         fornecedor.setInscricaoEstadual(fornecedorDto.getInscricaoEstadual());
-        fornecedor.setActive(fornecedorDto.isActive());
+        fornecedor.setStatus(fornecedorDto.isStatus());
 
         List<Contato> contatos = new ArrayList<>();
         for (Contato contato : fornecedorDto.getContatos()) {
@@ -86,7 +86,7 @@ public class FornecedorService {
         fornecedorDB.setRazaoSocial(fornecedorDto.getRazaoSocial());
         fornecedorDB.setNomeFantasia(fornecedorDto.getNomeFantasia());
         fornecedorDB.setInscricaoEstadual(fornecedorDto.getInscricaoEstadual());
-        fornecedorDB.setActive(fornecedorDto.isActive());
+        fornecedorDB.setStatus(fornecedorDto.isStatus());
 
         List<Contato> contatos = fornecedorDB.getContatos();
         for (Contato contato : fornecedorDto.getContatos()) {
@@ -119,7 +119,7 @@ public class FornecedorService {
 
     public void delete(Integer id) {
         Fornecedor fornecedor = findById(id);
-        fornecedor.setActive(false);
+        fornecedor.setStatus(false);
         repository.save(fornecedor);
     }
 
