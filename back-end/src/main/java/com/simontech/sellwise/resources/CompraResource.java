@@ -1,9 +1,9 @@
 package com.simontech.sellwise.resources;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.simontech.sellwise.domain.Compra;
 import com.simontech.sellwise.domain.dtos.CompraDto;
@@ -21,6 +22,7 @@ import com.simontech.sellwise.services.CompraService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @Tag(name = "Compra", description = "Operações CRUD relacionadas às compras")
@@ -41,15 +43,16 @@ public class CompraResource {
     @GetMapping
     public ResponseEntity<List<CompraDto>> findAll() {
         List<Compra> listCompras = service.findAll();
-        List<CompraDto> list = listCompras.stream().map(obj -> new CompraDto(obj)).collect(Collectors.toList());
+        List<CompraDto> list = listCompras.stream().map(CompraDto::new).collect(Collectors.toList());
         return ResponseEntity.ok().body(list);
     }
 
     @Operation(summary = "Cadastra uma compra", description = "Cadastra uma nova compra.")
     @PostMapping
-    public ResponseEntity<CompraDto> create(@RequestBody CompraDto compraDto) {
+    public ResponseEntity<CompraDto> create(@Valid @RequestBody CompraDto compraDto) {
         Compra compra = service.create(compraDto);
-        URI uri = URI.create("/compra/" + compra.getIdCompra());
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                  .buildAndExpand(compra.getIdCompra()).toUri();
         return ResponseEntity.created(uri).body(new CompraDto(compra));
     }
 
@@ -57,12 +60,13 @@ public class CompraResource {
     @PutMapping(value = "/{id}")
     public ResponseEntity<CompraDto> cancelar(@PathVariable Integer id) {
         service.cancelCompra(id);
-        return ResponseEntity.noContent().build();
+        Compra compraCancelada = service.findById(id); // Buscar a compra para o retorno
+        return ResponseEntity.ok().body(new CompraDto(compraCancelada));
     }
 
     @Operation(summary = "Dashboard de compras", description = "Retorna informações sobre as compras.")
     @GetMapping(value = "/dashboard-compra-info")
-    public ResponseEntity<Map<String, Object>> dashboardComprasInfo(){
+    public ResponseEntity<Map<String, Object>> dashboardComprasInfo() {
         Map<String, Object> dashboardComprasInfo = service.dashboardComprasInformation();
         return ResponseEntity.ok().body(dashboardComprasInfo);
     }

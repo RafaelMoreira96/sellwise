@@ -298,7 +298,7 @@ public class DBService {
         Produto produto1 = produtoRepository.findById(1)
                 .orElseThrow(() -> new NoSuchElementException("Produto com ID 1 não encontrado"));
 
-        ItemCompra itemCompra1 = new ItemCompra(
+        ItemCompra itemCompra1 = new ItemCompra(null,
                 produto1.getIdProduto(),
                 produto1.getDescricao(),
                 produto1.getCodBarras(),
@@ -308,7 +308,7 @@ public class DBService {
         Produto produto2 = produtoRepository.findById(2)
                 .orElseThrow(() -> new NoSuchElementException("Produto com ID 2 não encontrado"));
 
-        ItemCompra itemCompra2 = new ItemCompra(
+        ItemCompra itemCompra2 = new ItemCompra(null,
                 produto2.getIdProduto(),
                 produto2.getDescricao(),
                 produto2.getCodBarras(),

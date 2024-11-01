@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardCardComponent } from './dashboard-card.component';
+import { CardFastInfoComponent } from './card-fast-info.component';
 
-describe('DashboardCardComponent', () => {
-  let component: DashboardCardComponent;
-  let fixture: ComponentFixture<DashboardCardComponent>;
+describe('CardFastInfoComponent', () => {
+  let component: CardFastInfoComponent;
+  let fixture: ComponentFixture<CardFastInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DashboardCardComponent]
+      declarations: [CardFastInfoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DashboardCardComponent);
+    fixture = TestBed.createComponent(CardFastInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

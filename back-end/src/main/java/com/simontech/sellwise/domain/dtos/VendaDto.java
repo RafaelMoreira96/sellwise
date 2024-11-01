@@ -3,6 +3,7 @@ package com.simontech.sellwise.domain.dtos;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simontech.sellwise.domain.ItemVenda;
@@ -25,7 +26,7 @@ public class VendaDto {
 
     private Integer clienteId;
     private Integer funcionarioId;
-    private List<ItemVenda> itensVenda;
+    private List<ItemVenda> itensVenda; 
     private double valorVenda;
     private Integer formaPagamentoId;
 
@@ -104,7 +105,10 @@ public class VendaDto {
     }
 
     public List<ItemVenda> getItensVenda() {
-        return itensVenda;
+        return itensVenda.stream()
+                .map(item -> new ItemVenda(item.getIdItemVenda(), item.getIdProduto(), item.getDescricao(),
+                        item.getCodBarras(), item.getPrecoVendido(), item.getDesconto(), item.getQuantidade()))
+                .collect(Collectors.toList());
     }
 
     public void setItensVenda(List<ItemVenda> itens) {
@@ -126,5 +130,4 @@ public class VendaDto {
     public void setFormaPagamentoId(Integer formaPagamentoId) {
         this.formaPagamentoId = formaPagamentoId;
     }
-
 }

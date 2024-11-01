@@ -7,7 +7,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simontech.sellwise.domain.enums.StatusCompra;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +22,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Hidden
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -40,7 +38,7 @@ public class Compra {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataCompra = LocalDate.now();
-
+    
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")
     private Fornecedor fornecedor;
@@ -51,8 +49,7 @@ public class Compra {
 
     @OneToMany
     private List<ItemCompra> itensCompra = new ArrayList<>();
-
+    
     private StatusCompra status = StatusCompra.ANDAMENTO;
-
     private double valorTotal;
 }

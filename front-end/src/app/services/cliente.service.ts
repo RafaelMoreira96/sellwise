@@ -18,11 +18,11 @@ export class ClienteService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  createClient(client: Object): Observable<Object> {
+  createCliente(client: Object): Observable<Object> {
     return this.http.post(`${this.baseUrl}`, client);
   }
 
-  updateClient(id: number, client: Object): Observable<Object> {
+  updateCliente(id: number, client: Object): Observable<Object> {
     return this.http.put(`${this.baseUrl}/${id}`, client);
   }
 

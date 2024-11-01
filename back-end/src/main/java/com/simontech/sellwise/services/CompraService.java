@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.simontech.sellwise.domain.*;
 import com.simontech.sellwise.domain.dtos.CompraDto;
+import com.simontech.sellwise.domain.dtos.ItemCompraDto;
 import com.simontech.sellwise.domain.enums.StatusCompra;
 import com.simontech.sellwise.repositories.*;
 import com.simontech.sellwise.services.exceptions.ObjectNotFoundException;
@@ -45,8 +46,8 @@ public class CompraService {
 
     public List<Compra> findAll() {
         return compraRepository.findAll().stream()
-                .filter(compra -> compra.getStatus().equals(StatusCompra.FINALIZADO) 
-                               || compra.getStatus().equals(StatusCompra.ANDAMENTO))
+                .filter(compra -> compra.getStatus().equals(StatusCompra.FINALIZADO)
+                        || compra.getStatus().equals(StatusCompra.ANDAMENTO))
                 .collect(Collectors.toList());
     }
 
@@ -56,16 +57,17 @@ public class CompraService {
                 .orElseThrow(() -> new ObjectNotFoundException("Fornecedor não encontrado!"));
 
         Funcionario funcionario = funcionarioRepository.findById(compraDto.getFuncionarioId())
-                .orElseThrow(() -> new ObjectNotFoundException("Funcionario não encontrado!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Funcionário não encontrado!"));
 
         List<ItemCompra> itensCompra = processarItensCompra(compraDto.getItensCompra());
 
         Compra compra = new Compra();
+        compra.setIdCompra(null);
         compra.setDataCompra(LocalDate.now());
         compra.setFornecedor(fornecedor);
         compra.setFuncionario(funcionario);
         compra.setItensCompra(itensCompra);
-        compra.setValorTotal(calcularValorTotal(itensCompra));
+        compra.setValorTotal(calcularValorCompra(itensCompra));
         compra.setNumeroCompra(UUID.randomUUID().toString());
         compra.setStatus(StatusCompra.FINALIZADO);
 
@@ -76,60 +78,60 @@ public class CompraService {
     @Transactional
     public void cancelCompra(Integer id) {
         Compra compra = findById(id);
-        for (ItemCompra itemCompra : compra.getItensCompra()) {
-            atualizarEstoque(itemCompra.getIdProduto(), -itemCompra.getQuantidade());
-        }
+        compra.getItensCompra().forEach(itemCompra -> atualizarProdutoComEstoque(itemCompra,
+                produtoRepository.findById(itemCompra.getIdProduto()).get()));
         compra.setStatus(StatusCompra.DEVOLUCAO);
         compraRepository.save(compra);
     }
 
+    // Funções adicionais
     public Map<String, Object> dashboardComprasInformation() {
         LocalDate todayDate = LocalDate.now();
         List<Compra> compras = compraRepository.findByDataCompraBetween(todayDate, todayDate);
 
         Map<String, Object> dashboardInfo = new HashMap<>();
         dashboardInfo.put("quantidadeCompras", compras.size());
-        dashboardInfo.put("totalValorCompras", compras.stream()
-                .mapToDouble(Compra::getValorTotal).sum());
+        dashboardInfo.put("valorDasCompras", compras.stream().mapToDouble(Compra::getValorTotal).sum());
 
         return dashboardInfo;
     }
 
-    private List<ItemCompra> processarItensCompra(List<ItemCompra> itensCompraDto) {
+    // Métodos auxiliares
+    private List<ItemCompra> processarItensCompra(List<ItemCompraDto> itensCompraDto) {
         List<ItemCompra> itensCompra = new ArrayList<>();
 
-        for (ItemCompra itemCompraDto : itensCompraDto) {
+        for (ItemCompraDto itemCompraDto : itensCompraDto) {
             Produto produto = produtoRepository.findById(itemCompraDto.getIdProduto())
-                    .orElseThrow(() -> new ObjectNotFoundException("Produto não encontrado! ID: " + itemCompraDto.getIdProduto()));
+                    .orElseThrow(() -> new ObjectNotFoundException(
+                            "Produto não encontrado! ID: " + itemCompraDto.getIdProduto()));
 
-            atualizarProdutoComEstoque(itemCompraDto, produto);
-            itensCompra.add(itemCompraDto);
+            ItemCompra itemCompra = new ItemCompra();
+            itemCompra.setIdProduto(itemCompraDto.getIdProduto());
+            itemCompra.setDescricao(produto.getDescricao());
+            itemCompra.setCodBarras(produto.getCodBarras());
+            itemCompra.setQuantidade(itemCompraDto.getQuantidade());
+            itemCompra.setPrecoCompra(itemCompraDto.getPrecoCompra());
+
+            if (itensCompra.stream()
+                    .anyMatch(existingItem -> existingItem.getIdProduto().equals(itemCompra.getIdProduto()))) {
+                throw new IllegalArgumentException("Item já adicionado à compra: " + itemCompra.getIdProduto());
+            }
+
+            atualizarProdutoComEstoque(itemCompra, produto);
+            itensCompra.add(itemCompra);
         }
 
         return itensCompra;
     }
 
     private void atualizarProdutoComEstoque(ItemCompra itemCompra, Produto produto) {
-        itemCompra.setDescricao(produto.getDescricao());
-        itemCompra.setCodBarras(produto.getCodBarras());
-
         double novaQuantidadeEstoque = produto.getQteEstoque() + itemCompra.getQuantidade();
         produto.setQteEstoque(novaQuantidadeEstoque);
 
         produtoRepository.save(produto);
     }
 
-    private void atualizarEstoque(Integer produtoId, double quantidade) {
-        Produto produto = produtoRepository.findById(produtoId)
-                .orElseThrow(() -> new ObjectNotFoundException("Produto não encontrado! ID: " + produtoId));
-
-        double novaQuantidadeEstoque = produto.getQteEstoque() + quantidade;
-        produto.setQteEstoque(novaQuantidadeEstoque);
-
-        produtoRepository.save(produto);
-    }
-
-    private double calcularValorTotal(List<ItemCompra> itensCompra) {
+    private double calcularValorCompra(List<ItemCompra> itensCompra) {
         return itensCompra.stream()
                 .mapToDouble(item -> item.getQuantidade() * item.getPrecoCompra())
                 .sum();

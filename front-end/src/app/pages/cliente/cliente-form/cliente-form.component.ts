@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ClienteService } from '../../../services/cliente.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Cliente } from '../../../models/cliente'; 
 import { ToastrService } from 'ngx-toastr';
 import { Endereco } from '../../../models/endereco';
@@ -12,87 +11,89 @@ import { DatePipe } from '@angular/common';
   templateUrl: './cliente-form.component.html',
   styleUrl: './cliente-form.component.css'
 })
-export class ClienteFormComponent implements OnInit {
-  endereco: Endereco = {
-    idEndereco: 0,
-    cep: "",
-    logradouro: "",
-    numero: "",
-    complemento: "",
-    bairro: "",
-    cidade: "",
-    estado: ""
-  };
-
-  contatos: Contato[] = [];
-  client: Cliente = {
-    idCliente: 0,
-    nome: "",
-    cpf: "",
-    dataNascimento: "",
-    endereco: this.endereco,
-    contatos: this.contatos,
-    dataCadastro: "",
-    status: true
-  }
+export class ClienteFormComponent implements OnInit, OnChanges {
+  @Input() idCliente: number | null = null;
+  @Output() onCloseModal = new EventEmitter<void>();
+  @Output() onSave = new EventEmitter<void>();
 
   isEditMode: boolean = false;
+  cliente: Cliente = this.createEmptyCliente();
+  endereco: Endereco = this.createEmptyEndereco();
+  contatos: Contato[] = [];
 
   constructor(
     private toast: ToastrService,
-    private clienteService: ClienteService,  // Serviço do cliente
-    private route: ActivatedRoute,
-    private router: Router
+    private clienteService: ClienteService,
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get("id");
-    if (id) {
+    this.checkEditMode();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['idCliente'] && changes['idCliente'].currentValue !== null) {
       this.isEditMode = true;
-      this.clienteService.getClientById(parseInt(id)).subscribe(data => {
-        this.client = data;
-      });
+      this.loadCliente(this.idCliente!);
+    } else {
+      this.isEditMode = false;
+      this.cliente = this.createEmptyCliente();
     }
   }
 
-  saveClient(): void {
-    const [month, day, year] = this.client.dataNascimento.split('/');
+  checkEditMode(): void {
+    if (this.idCliente!= null) {
+      this.isEditMode = true;
+      this.loadCliente(this.idCliente);
+    }
+  }
 
-    // Convertendo para um objeto Date
+  loadCliente(id: number): void {
+    this.clienteService.getClientById(id).subscribe(
+      (cliente) => {
+        this.cliente = cliente;
+        this.endereco = cliente.endereco;
+        this.contatos = cliente.contatos;
+      },
+      (ex) => {
+        console.error("Erro ao encontrar cliente: " + ex.message);
+      }
+    );
+  }
+
+  saveCliente(): void {
+    const [month, day, year] = this.cliente.dataNascimento.split('/');
     const date = new Date(+year, +month - 1, +day);
 
-    // Verifica se a data é válida
     if (isNaN(date.getTime())) {
-      console.error('Data inválida');
-      console.log(date);
-      return; // Adicione tratamento de erro aqui
+      this.toast.error("Data inválida!");
+      return;
     }
 
     let datePipe = new DatePipe('pt-BR');
-    
-    // Formatando a data de volta para o formato dd/MM/yyyy se necessário
-    this.client.dataNascimento = datePipe.transform(date, 'dd/MM/yyyy') || '';
+    this.cliente.dataNascimento = datePipe.transform(date, 'dd/MM/yyyy') || '';
+    this.cliente.dataCadastro = datePipe.transform(new Date(), 'dd/MM/yyyy') || '';
 
     if (this.isEditMode) {
-      this.clienteService.updateClient(this.client.idCliente, this.client).subscribe(
+      this.clienteService.updateCliente(this.cliente.idCliente, this.cliente).subscribe(
         () => {
           this.toast.success("Cliente atualizado com sucesso!");
-          this.router.navigate(["/customers"]);
+          this.clearForm();
+          this.onSave.emit();
+          this.onCloseModal.emit();
         },
         (ex) => {
-          this.toast.error("Erro ao atualizar cliente!");
-          console.error(ex);
+          this.toast.error("Erro ao atualizar cliente: " + ex.message);
         }
       );
     } else {
-      this.clienteService.createClient(this.client).subscribe(
+      this.clienteService.createCliente(this.cliente).subscribe(
         () => {
           this.toast.success("Cliente criado com sucesso!");
-          this.router.navigate(["/customers"]);
+          this.clearForm();
+          this.onCloseModal.emit();
         },
         (ex) => {
-          this.toast.error("Erro ao cadastrar cliente!");
-          console.error(ex);
+          this.toast.error("Erro ao cadastrar cliente: " + ex.message);
         }
       );
     }
@@ -104,10 +105,48 @@ export class ClienteFormComponent implements OnInit {
       numero: "",
       tipo: ""
     };
-    this.client.contatos.push(newContact);
+    this.cliente.contatos.push(newContact);
   }
 
   removeContact(index: number): void {
-    this.client.contatos.splice(index, 1);
+    this.cliente.contatos.splice(index, 1);
+  }
+
+  cancel(): void {
+    this.clearForm();
+    this.onCloseModal.emit();
+  }
+
+  clearForm(): void {
+    this.cliente = this.createEmptyCliente();
+    this.endereco = this.createEmptyEndereco();
+    this.contatos = [];
+    this.isEditMode = false;
+  }
+
+  private createEmptyCliente(): Cliente {
+    return {
+      idCliente: 0,
+      nome: "",
+      cpf: "",
+      dataNascimento: "",
+      endereco: this.endereco,
+      contatos: this.contatos,
+      dataCadastro: "",
+      status: true
+    };
+  }
+
+  private createEmptyEndereco(): Endereco {
+    return {
+      idEndereco: 0,
+      cep: "",
+      logradouro: "",
+      numero: "",
+      complemento: "",
+      bairro: "",
+      cidade: "",
+      estado: ""
+    };
   }
 }

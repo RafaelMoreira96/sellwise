@@ -1,6 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
+import { DataTablesModule } from "angular-datatables";
 
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { provideHttpClient } from '@angular/common/http';
@@ -31,9 +32,9 @@ import { PdvComponent } from './pages/pdv/pdv/pdv.component';
 import { EntradaEstoqueComponent } from './pages/entrada-estoque/entrada-estoque/entrada-estoque.component';
 import { SidebarItemComponent } from './components/layout/sidebar/sidebar-item/sidebar-item.component';
 import { LoginScreenComponent } from './pages/login-screen/login-screen.component';
-import { DashboardCardComponent } from './components/dashboard-card/dashboard-card.component';
-import { DashboardClienteItemComponent } from './components/dashboard-cliente-item/dashboard-cliente-item.component';
+import { ItemClienteTableComponent } from './components/dashboard/item-cliente-table/item-cliente-table.component';
 import { TableVendasDashboardComponent } from './components/dashboard/table-vendas-dashboard/table-vendas-dashboard.component';
+import { CardFastInfoComponent } from './components/dashboard/card-fast-info/card-fast-info.component';
 
 registerLocaleData(localePt);
 
@@ -58,14 +59,15 @@ registerLocaleData(localePt);
     EntradaEstoqueComponent,
     SidebarItemComponent,
     LoginScreenComponent,
-    DashboardCardComponent,
-    DashboardClienteItemComponent,
+    CardFastInfoComponent,
+    ItemClienteTableComponent,
     TableVendasDashboardComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
+    DataTablesModule,
     FormsModule,
     AppRoutingModule,
     ToastrModule.forRoot()

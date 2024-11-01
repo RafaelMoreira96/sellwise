@@ -1,9 +1,13 @@
-<div class="container mt-5">
+<div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2>Client List</h2>
-      <a routerLink="/add-customer" class="btn btn-primary mb-3">Add Client</a>
-      <table class="table table-striped">
+      <h2> Clientes </h2>
+
+      <button (click)="openModal()" class="btn btn-primary">
+        Adicionar (<i class="fas fa-plus"></i>)
+      </button>
+
+      <table datatable [dtOptions]="dtOptions" class="shadow table table-striped-columns table-hover p-2">
         <thead>
           <tr>
             <th>ID</th>
@@ -22,21 +26,61 @@
             <td>{{ cliente.dataNascimento | date }}</td>
             <td>{{ cliente.status ? "Ativo" : "Inativo" }}</td>
             <td>
-              <a
-                [routerLink]="['/edit-customer', cliente.idCliente]"
-                class="btn btn-info btn-sm"
-                ><i class="far fa-edit"></i
-              ></a>
-              <button
-                (click)="deleteCustomer(cliente.idCliente)"
-                class="btn btn-danger btn-sm"
-              >
+              <button (click)="editCliente(cliente.idCliente)" class="btn btn-info btn-sm">
+                <i class="far fa-edit"></i>
+              </button>
+              <button (click)="openRemoveModal(cliente.idCliente)" class="btn btn-danger btn-sm">
                 <i class="fas fa-trash-alt"></i>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="isModalFormOpen" (click)="closeModal()"></div>
+<div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalFormOpen"
+  [style.display]="isModalFormOpen ? 'block' : 'none'" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
+    (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ isEditMode ? 'Editar cliente existente' : 'Adicionar novo cliente' }}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-cliente-form [idCliente]="clienteSelecionado" (onCloseModal)="onModalClose()" (onSave)="reloadClientes()">
+        </app-cliente-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="isModalRemoveOpen" (click)="closeModal()"></div>
+<div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalRemoveOpen"
+  [style.display]="isModalRemoveOpen ? 'block' : 'none'" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
+    (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar remoção</h5>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p>Tem certeza de que deseja remover o cliente selecionado?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="deleteCustomer()">Remover</button>
+      </div>
     </div>
   </div>
 </div>

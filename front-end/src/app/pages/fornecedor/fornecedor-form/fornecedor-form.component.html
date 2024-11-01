@@ -1,79 +1,101 @@
-<div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h2>{{ isEditMode ? "Editar Fornecedor" : "Adicionar Fornecedor" }}</h2>
-          </div>
-          <div class="card-body">
-            <form (ngSubmit)="saveFornecedor()">
-              <!-- Dados do Fornecedor -->
-              <div class="form-group">
-                <label for="razaoSocial">Razão Social</label>
-                <input type="text" id="razaoSocial" class="form-control" [(ngModel)]="fornecedor.razaoSocial" name="razaoSocial" required />
-              </div>
-              <div class="form-group">
-                <label for="nomeFantasia">Nome Fantasia</label>
-                <input type="text" id="nomeFantasia" class="form-control" [(ngModel)]="fornecedor.nomeFantasia" name="nomeFantasia" required />
-              </div>
-              <div class="form-group">
-                <label for="cnpj">CNPJ</label>
-                <input type="text" id="cnpj" class="form-control" [(ngModel)]="fornecedor.cnpj" name="cnpj" required />
-              </div>
-              <div class="form-group">
-                <label for="inscricao-estadual">Inscrição Estadual</label>
-                <input type="text" id="inscricao-estadual" class="form-control" [(ngModel)]="fornecedor.inscricaoEstadual" name="inscricao-estadual" required />
-              </div>
-              
-              <!-- Endereço -->
-              <div class="form-group">
-                <label for="cep">CEP</label>
-                <input type="text" id="cep" class="form-control" [(ngModel)]="fornecedor.endereco.cep" name="cep" required />
-              </div>
-              <div class="form-group">
-                <label for="logradouro">Logradouro</label>
-                <input type="text" id="logradouro" class="form-control" [(ngModel)]="fornecedor.endereco.logradouro" name="logradouro" required />
-              </div>
-              <div class="form-group">
-                <label for="numero">Número</label>
-                <input type="text" id="numero" class="form-control" [(ngModel)]="fornecedor.endereco.numero" name="numero" required />
-              </div>
-              <div class="form-group">
-                <label for="complemento">Complemento</label>
-                <input type="text" id="complemento" class="form-control" [(ngModel)]="fornecedor.endereco.complemento" name="complemento" />
-              </div>
-              <div class="form-group">
-                <label for="bairro">Bairro</label>
-                <input type="text" id="bairro" class="form-control" [(ngModel)]="fornecedor.endereco.bairro" name="bairro" required />
-              </div>
-              <div class="form-group">
-                <label for="cidade">Cidade</label>
-                <input type="text" id="cidade" class="form-control" [(ngModel)]="fornecedor.endereco.cidade" name="cidade" required />
-              </div>
-              <div class="form-group">
-                <label for="estado">Estado</label>
-                <input type="text" id="estado" class="form-control" [(ngModel)]="fornecedor.endereco.estado" name="estado" required />
-              </div>
-  
-              <!-- Contatos -->
-              <div class="form-group" *ngFor="let contato of fornecedor.contatos; let i = index">
-                <label for="numero-{{ i }}">Contato {{ i + 1 }} - Número</label>
-                <input type="text" id="numero-{{ i }}" class="form-control" [(ngModel)]="contato.numero" name="numero-{{ i }}" required />
-                <label for="tipo-{{ i }}">Tipo</label>
-                <input type="text" id="tipo-{{ i }}" class="form-control" [(ngModel)]="contato.tipo" name="tipo-{{ i }}" required />
-                <button type="button" class="btn btn-danger mt-2" (click)="removeContact(i)">Remover</button>
-              </div>
-              <button type="button" class="btn btn-secondary mt-2" (click)="addContact()">Adicionar Contato</button>
-  
-              <!-- Botões de ação -->
-              <button type="submit" class="btn btn-primary mt-3">
-                {{ isEditMode ? "Atualizar" : "Salvar" }}
-              </button>
-              <a routerLink="/suppliers" class="btn btn-secondary ml-2 mt-3">Cancelar</a>
-            </form>
-          </div>
-        </div>
+<form (ngSubmit)="saveFornecedor()">
+  <!-- Dados do Fornecedor -->
+  <div class="form-group">
+    <label for="razaoSocial">Razão Social</label>
+    <input type="text" id="razaoSocial" class="form-control" [(ngModel)]="fornecedor.razaoSocial" name="razaoSocial"
+      required />
+  </div>
+  <div class="form-group">
+    <label for="nomeFantasia">Nome Fantasia</label>
+    <input type="text" id="nomeFantasia" class="form-control" [(ngModel)]="fornecedor.nomeFantasia" name="nomeFantasia"
+      required />
+  </div>
+
+  <div class="form-group row">
+    <div class="col-6">
+      <label for="cnpj">CNPJ</label>
+      <input type="text" id="cnpj" class="form-control" [(ngModel)]="fornecedor.cnpj" name="cnpj" required />
+    </div>
+    <div class="col-6">
+      <label for="inscricao-estadual">Inscrição Estadual</label>
+      <input type="text" id="inscricao-estadual" class="form-control" [(ngModel)]="fornecedor.inscricaoEstadual"
+        name="inscricao-estadual" required />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <!-- Endereço -->
+    <div class="col-3">
+      <label for="cep">CEP</label>
+      <input type="text" id="cep" class="form-control" [(ngModel)]="fornecedor.endereco.cep" name="cep" required />
+    </div>
+
+    <div class="col-6">
+      <label for="logradouro">Logradouro</label>
+      <input type="text" id="logradouro" class="form-control" [(ngModel)]="fornecedor.endereco.logradouro"
+        name="logradouro" required />
+    </div>
+
+    <div class="col-3">
+      <label for="numero">Número</label>
+      <input type="text" id="numero" class="form-control" [(ngModel)]="fornecedor.endereco.numero" name="numero"
+        required />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-4">
+      <label for="bairro">Bairro</label>
+      <input type="text" id="bairro" class="form-control" [(ngModel)]="fornecedor.endereco.bairro" name="bairro"
+        required />
+    </div>
+
+    <div class="col-4">
+      <label for="cidade">Cidade</label>
+      <input type="text" id="cidade" class="form-control" [(ngModel)]="fornecedor.endereco.cidade" name="cidade"
+        required />
+    </div>
+
+    <div class="col-4">
+      <label for="estado">Estado</label>
+      <input type="text" id="estado" class="form-control" [(ngModel)]="fornecedor.endereco.estado" name="estado"
+        required />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="complemento">Complemento</label>
+    <input type="text" id="complemento" class="form-control" [(ngModel)]="fornecedor.endereco.complemento"
+      name="complemento" />
+  </div>
+
+  <!-- Contatos -->
+  <div class="form-group" *ngFor="let contato of fornecedor.contatos; let i = index">
+    <div class="row">
+      <div class="col-6">
+        <label for="numero-{{ i }}">Contato {{ i + 1 }}</label>
+        <input type="text" id="numero-{{ i }}" class="form-control" [(ngModel)]="contato.numero" name="numero-{{ i }}"
+          required />
+      </div>
+      <div class="col-4">
+        <label for="tipo-{{ i }}">Tipo</label>
+        <select id="tipo-{{ i }}" class="form-control" [(ngModel)]="contato.tipo" name="tipo-{{ i }}" required>
+          <option value="Fixo">Fixo</option>
+          <option value="Celular">Celular</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+      <div class="col-2 d-flex align-items-end">
+        <button type="button" class="btn btn-danger" (click)="removeContact(i)">
+          <i class="fas fa-trash-alt"></i>
+        </button>
       </div>
     </div>
   </div>
-  
+
+  <div class="form-group button-group">
+    <button type="button" class="btn btn-info first-button" (click)="addContact()"> Adicionar Contato </button>
+    <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Atualizar' : 'Cadastrar' }}</button>
+    <a (click)="cancel()" class="btn btn-danger"> Cancelar </a>
+  </div>
+</form>

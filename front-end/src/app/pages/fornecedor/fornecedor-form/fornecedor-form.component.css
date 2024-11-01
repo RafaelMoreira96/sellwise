@@ -1,0 +1,8 @@
+.button-group a,
+button {
+    margin-left: 15px;
+}
+
+.first-button {
+    margin-left: 0px;
+}

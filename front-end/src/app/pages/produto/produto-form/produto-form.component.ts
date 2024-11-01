@@ -9,11 +9,12 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./produto-form.component.css']
 })
 export class ProdutoFormComponent implements OnInit {
-  @Input() idProduto: number | null = null; // Recebe o id do produto para edição ou null para novo produto
+  @Input() idProduto: number | null = null; 
   @Output() onCloseModal = new EventEmitter<void>(); 
+  @Output() onSave = new EventEmitter<void>();
 
   isEditMode: boolean = false; 
-  produto: Produto = this.createEmptyProduct(); // Inicializa com um produto vazio
+  produto: Produto = this.createEmptyProduct(); 
 
   constructor(
     private toast: ToastrService, 
@@ -27,10 +28,10 @@ export class ProdutoFormComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['idProduto'] && changes['idProduto'].currentValue !== null) {
       this.isEditMode = true;
-      this.loadProduct(this.idProduto!); // Carrega o produto selecionado para edição
+      this.loadProduct(this.idProduto!); 
     } else {
       this.isEditMode = false;
-      this.produto = this.createEmptyProduct(); // Reseta o formulário se for um novo produto
+      this.produto = this.createEmptyProduct();
     }
   }
 
@@ -47,8 +48,7 @@ export class ProdutoFormComponent implements OnInit {
         this.produto = data;
       },
       (error) => {
-        console.error("Erro ao carregar produto:", error);
-        this.toast.error("Erro ao carregar produto!");
+        this.toast.error("Erro ao carregar produto: " + error.message);
       }
     );
   }
@@ -59,11 +59,11 @@ export class ProdutoFormComponent implements OnInit {
         () => {
           this.toast.success("Produto atualizado com sucesso!");
           this.clearForm();
+          this.onSave.emit(); 
           this.onCloseModal.emit(); 
         },
         (ex) => {
-          this.toast.error("Erro ao atualizar produto!");
-          console.error(ex);
+          this.toast.error("Erro ao atualizar produto: " + ex.message);
         }
       );
     } else {
@@ -74,24 +74,22 @@ export class ProdutoFormComponent implements OnInit {
           this.onCloseModal.emit(); 
         },
         (ex) => {
-          this.toast.error("Erro ao cadastrar produto!");
-          console.error(ex);
+          this.toast.error("Erro ao cadastrar produto: " + ex.message);
         }
       );
     }
   }
 
   cancel(): void {
-    this.clearForm(); // Limpa o formulário ao cancelar
+    this.clearForm();
     this.onCloseModal.emit(); 
   }
 
   clearForm(): void {
-    this.produto = this.createEmptyProduct(); // Reseta o objeto produto
+    this.produto = this.createEmptyProduct(); 
     this.isEditMode = false;
   }
 
-  // Cria um produto vazio para ser usado na inicialização e reset do formulário
   private createEmptyProduct(): Produto {
     return {
       idProduto: 0,

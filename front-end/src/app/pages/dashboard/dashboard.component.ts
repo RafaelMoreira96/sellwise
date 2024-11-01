@@ -8,7 +8,7 @@ import { CompraService } from "../../services/compra.service";
 interface CardInfo {
   icon: string;
   category: string;
-  title: number;
+  title: any;
 }
 
 interface ClienteItem {
@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
 
     this.compraService.getDashboardInfo().subscribe((data: any) => {
       this.quantidade_compras_hoje = data.quantidadeCompras;
-      this.valor_compras_hoje = data.totalValorCompras;
+      this.valor_compras_hoje = data.valorDasCompras;
       this.updateCardsInfo();
     });
 
@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
       if (Array.isArray(data)) {
         this.itens_venda_info = data.map((venda: VendaInfo) => ({
           idVenda: venda.idVenda,
-          numeroVenda: venda.numeroVenda || '', 
+          numeroVenda: venda.numeroVenda || '',
           dataVenda: venda.dataVenda,
           valorVenda: venda.valorVenda,
           status: venda.status
@@ -96,9 +96,9 @@ export class DashboardComponent implements OnInit {
   updateCardsInfo() {
     this.cards_info = [];
     this.cards_info.push({ icon: 'fas fa-shopping-cart', category: 'Vendas realizadas', title: this.quantidade_vendas_hoje });
-    this.cards_info.push({ icon: 'fas fa-dollar-sign', category: 'Valor entrada ($)', title: this.valor_vendas_hoje });
+    this.cards_info.push({ icon: 'fas fa-dollar-sign', category: 'Valor entrada ($)', title: `R$ ${this.valor_vendas_hoje.toFixed(2)}` });
     this.cards_info.push({ icon: 'fas fa-truck-loading', category: 'Compras realizadas', title: this.quantidade_compras_hoje });
-    this.cards_info.push({ icon: 'fas fa-dollar-sign', category: 'Valor saída ($)', title: this.valor_compras_hoje });
+    this.cards_info.push({ icon: 'fas fa-dollar-sign', category: 'Valor saída ($)', title: `R$ ${this.valor_compras_hoje.toFixed(2)}` });
   }
   reload() {
     console.log('reload');

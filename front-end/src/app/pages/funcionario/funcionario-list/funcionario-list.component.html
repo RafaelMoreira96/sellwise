@@ -1,48 +1,84 @@
-<div class="container mt-5">
-    <div class="row">
-      <div class="col-md-12">
-        <h2>Lista de Funcionários</h2>
-        <a routerLink="/add-employee" class="btn btn-primary mb-3">Adicionar Funcionário</a>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>CPF</th>
-              <th>Data de Nascimento</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let funcionario of funcionarios">
-              <td>{{ funcionario.idFuncionario }}</td>
-              <td>{{ funcionario.nome }}</td>
-              <td>{{ funcionario.cpf }}</td>
-              <td>{{ funcionario.dataNascimento | date: 'dd/MM/yyyy' }}</td>
-              <td>{{ funcionario.status ? "Ativo" : "Inativo" }}</td>
-              <td>
-                <a
-                  [routerLink]="['/edit-employee', funcionario.idFuncionario]"
-                  class="btn btn-info btn-sm"
-                  title="Editar"
-                  ><i class="far fa-edit"></i
-                ></a>
-                <button
-                  (click)="deleteEmployee(funcionario.idFuncionario)"
-                  class="btn btn-danger btn-sm"
-                  title="Remover"
-                >
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div *ngIf="!funcionarios.length" class="alert alert-warning">
-          Nenhum funcionário encontrado.
-        </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2> Funcionários </h2>
+
+      <button (click)="openModal()" class="btn btn-primary">
+        Adicionar (<i class="fas fa-plus"></i>)
+      </button>
+
+      <table datatable [dtOptions]="dtOptions" class="shadow table table-striped-columns table-hover p-2">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Nome do Usuário</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let funcionario of funcionarios">
+            <td>{{ funcionario.idFuncionario }}</td>
+            <td>{{ funcionario.nome }}</td>
+            <td>{{ funcionario.cpf }}</td>
+            <td>{{ funcionario.userFuncionario?.username }}</td>
+            <td>
+              <button (click)="openRemoveModal(funcionario.idFuncionario)" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button (click)="openModal(funcionario.idFuncionario)" class="btn btn-info btn-sm">
+                <i class="far fa-edit"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="isModalFormOpen" (click)="closeModal()"></div>
+<div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalFormOpen"
+  [style.display]="isModalFormOpen ? 'block' : 'none'" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
+    (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ isEditMode ? 'Editar funcionário existente' : 'Adicionar novo funcionário' }}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-funcionario-form [idFuncionario]="funcionarioSelecionado" (onCloseModal)="onModalClose()"
+          (onSave)="reloadFuncionarios()"> </app-funcionario-form>
       </div>
     </div>
   </div>
-  
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="isModalRemoveOpen" (click)="closeModal()"></div>
+<div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalRemoveOpen"
+  [style.display]="isModalRemoveOpen ? 'block' : 'none'" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
+    (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar remoção</h5>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p>Tem certeza de que deseja remover o funcionário selecionado?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="deleteFuncionario()">Remover</button>
+      </div>
+    </div>
+  </div>
+</div>

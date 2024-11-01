@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard-card',
-  templateUrl: './dashboard-card.component.html',
-  styleUrl: './dashboard-card.component.css'
+  selector: 'app-card-fast-info',
+  templateUrl: './card-fast-info.component.html',
+  styleUrl: './card-fast-info.component.css'
 })
-export class DashboardCardComponent {
+export class CardFastInfoComponent {
   @Input() icon: string = 'fas fa-user-check';
   @Input() category: string = 'Category';     
   @Input() title: number = 0;               

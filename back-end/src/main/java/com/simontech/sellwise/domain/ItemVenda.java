@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,14 +27,9 @@ public class ItemVenda {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idItemVenda;
     private Integer idProduto;
-    @NotNull
     private String descricao;
-    @NotNull
     private String codBarras;
-    @NotNull
     private double precoVendido;
-    @NotNull
     private double desconto;
-    @NotNull
     private double quantidade;
 }

@@ -23,16 +23,9 @@ const routes: Routes = [
     path: '',
     component: SidebarComponent,
     children: [
-      // Dashboard route
       { path: 'dashboard', component: DashboardComponent },
-
-      // Configuration route
       { path: 'configs', component: ConfigPageComponent },
-
-      // Products routes 
       { path: 'products', component: ProdutoListComponent },
-      { path: 'add-product', component: ProdutoFormComponent },
-      { path: 'edit-product/:id', component: ProdutoFormComponent, },
 
       // Customers routes
       { path: 'customers', component: ClienteListComponent },

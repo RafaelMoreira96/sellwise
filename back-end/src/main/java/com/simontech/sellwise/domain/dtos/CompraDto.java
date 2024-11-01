@@ -3,10 +3,10 @@ package com.simontech.sellwise.domain.dtos;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.simontech.sellwise.domain.Compra;
-import com.simontech.sellwise.domain.ItemCompra;
 import com.simontech.sellwise.domain.enums.StatusCompra;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,13 +19,11 @@ public class CompraDto {
     private String numeroCompra;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataCompra = LocalDate.now();
-
-    private StatusCompra status;
-
+    private LocalDate dataCompra;
     private Integer fornecedorId;
     private Integer funcionarioId;
-    private List<ItemCompra> itensCompra;
+    private List<ItemCompraDto> itensCompra;
+    private StatusCompra status;
     private double valorTotal;
 
     public CompraDto(Compra compra) {
@@ -35,21 +33,25 @@ public class CompraDto {
         this.status = compra.getStatus();
         this.fornecedorId = compra.getFornecedor().getIdPessoa();
         this.funcionarioId = compra.getFuncionario().getIdPessoa();
-        this.itensCompra = compra.getItensCompra();
+        this.itensCompra = compra.getItensCompra().stream()
+            .map(ItemCompraDto::new)
+            .collect(Collectors.toList());
         this.valorTotal = compra.getValorTotal();
     }
 
     public CompraDto(Optional<Compra> compra) {
-        if (compra.isPresent()) {
-            this.idCompra = compra.get().getIdCompra();
-            this.numeroCompra = compra.get().getNumeroCompra();
-            this.dataCompra = compra.get().getDataCompra();
-            this.status = compra.get().getStatus();
-            this.fornecedorId = compra.get().getFornecedor().getIdPessoa();
-            this.funcionarioId = compra.get().getFuncionario().getIdPessoa();
-            this.itensCompra = compra.get().getItensCompra();
-            this.valorTotal = compra.get().getValorTotal();
-        }
+        compra.ifPresent(c -> {
+            this.idCompra = c.getIdCompra();
+            this.numeroCompra = c.getNumeroCompra();
+            this.dataCompra = c.getDataCompra();
+            this.status = c.getStatus();
+            this.fornecedorId = c.getFornecedor().getIdPessoa();
+            this.funcionarioId = c.getFuncionario().getIdPessoa();
+            this.itensCompra = c.getItensCompra().stream()
+                .map(ItemCompraDto::new)
+                .collect(Collectors.toList());
+            this.valorTotal = c.getValorTotal();
+        });
     }
 
     public Integer getIdCompra() {
@@ -100,12 +102,12 @@ public class CompraDto {
         this.funcionarioId = funcionarioId;
     }
 
-    public List<ItemCompra> getItensCompra() {
+    public List<ItemCompraDto> getItensCompra() {
         return itensCompra;
     }
 
-    public void setItensCompra(List<ItemCompra> itens) {
-        this.itensCompra = itens;
+    public void setItensCompra(List<ItemCompraDto> itensCompra) {
+        this.itensCompra = itensCompra;
     }
 
     public double getValorTotal() {
@@ -115,5 +117,4 @@ public class CompraDto {
     public void setValorTotal(double valorTotal) {
         this.valorTotal = valorTotal;
     }
-
 }
