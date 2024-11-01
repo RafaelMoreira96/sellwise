@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-6 col-md-3" *ngFor="let card of cards_info">
-        <app-dashboard-card [icon]="card.icon" [category]="card.category" [title]="card.title" />
+        <app-card-fast-info [icon]="card.icon" [category]="card.category" [title]="card.title" />
     </div>
 </div>
 
@@ -13,7 +13,7 @@
                 </div>
                 <div class="card-list py-4">
                     <div *ngFor="let item of itens_cliente_info">
-                        <app-dashboard-cliente-item [nome_cliente]="item.nome" [data_cadastro]="item.dataCadastro" />
+                        <app-item-cliente-table [nome_cliente]="item.nome" [data_cadastro]="item.dataCadastro" />
                     </div>
                 </div>
             </div>
