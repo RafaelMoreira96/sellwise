@@ -57,7 +57,7 @@ export class ProdutoFormComponent implements OnInit {
     if (this.isEditMode) {
       this.produtoService.updateProduct(this.produto.idProduto, this.produto).subscribe(
         () => {
-          this.toast.success("Produto atualizado com sucesso!");
+          this.toast.success("Produto atualizado com sucesso!", "Atualizado!");
           this.clearForm();
           this.onSave.emit(); 
           this.onCloseModal.emit(); 
@@ -69,12 +69,20 @@ export class ProdutoFormComponent implements OnInit {
     } else {
       this.produtoService.createProduct(this.produto).subscribe(
         () => {
-          this.toast.success("Produto criado com sucesso!");
+          this.toast.success("Produto criado com sucesso!", "Cadastrado!");
           this.clearForm();
           this.onCloseModal.emit(); 
         },
         (ex) => {
-          this.toast.error("Erro ao cadastrar produto: " + ex.message);
+          if (ex.error.errors) {
+            ex.error.errors.forEach(
+              (element: { message: string | undefined }) => {
+                this.toast.error(element.message);
+              }
+            );
+          } else {
+            this.toast.error(ex.error.message);
+          }
         }
       );
     }

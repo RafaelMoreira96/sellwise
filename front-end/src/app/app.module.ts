@@ -35,6 +35,7 @@ import { LoginScreenComponent } from './pages/login-screen/login-screen.componen
 import { ItemClienteTableComponent } from './components/dashboard/item-cliente-table/item-cliente-table.component';
 import { TableVendasDashboardComponent } from './components/dashboard/table-vendas-dashboard/table-vendas-dashboard.component';
 import { CardFastInfoComponent } from './components/dashboard/card-fast-info/card-fast-info.component';
+import { ProdutoInativoListComponent } from './pages/produto/produto-inativo-list/produto-inativo-list.component';
 
 registerLocaleData(localePt);
 
@@ -61,7 +62,8 @@ registerLocaleData(localePt);
     LoginScreenComponent,
     CardFastInfoComponent,
     ItemClienteTableComponent,
-    TableVendasDashboardComponent
+    TableVendasDashboardComponent,
+    ProdutoInativoListComponent
   ],
   imports: [
     CommonModule,

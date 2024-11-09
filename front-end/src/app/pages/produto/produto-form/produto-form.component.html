@@ -1,47 +1,73 @@
-<form (ngSubmit)="saveProduct()">
-
+<form #form="ngForm" (ngSubmit)="saveProduct()" novalidate>
+  <!-- Código de Barras -->
   <div class="form-group row">
     <div class="col-4">
       <label for="codBarras">Código de Barras</label>
       <input type="text" id="codBarras" class="form-control" [(ngModel)]="produto.codBarras" name="codBarras" required>
+      <div *ngIf="form.submitted && form.controls['codBarras']?.invalid" class="text-danger">
+        Código de barras é obrigatório.
+      </div>
     </div>
+    
+    <!-- Descrição -->
     <div class="col-8">
       <label for="descricao">Descrição</label>
       <input type="text" id="descricao" class="form-control" [(ngModel)]="produto.descricao" name="descricao" required>
+      <div *ngIf="form.submitted && form.controls['descricao']?.invalid" class="text-danger">
+        Descrição é obrigatória.
+      </div>
     </div>
   </div>
 
+  <!-- Preço Atacado e Preço Varejo -->
   <div class="form-group row">
     <div class="col-6">
       <label for="precoAtacado">Preço Atacado</label>
       <input type="number" id="precoAtacado" class="form-control" [(ngModel)]="produto.precoAtacado" name="precoAtacado" required>
+      <div *ngIf="form.submitted && form.controls['precoAtacado']?.invalid" class="text-danger">
+        Preço de atacado é obrigatório.
+      </div>
     </div>
 
     <div class="col-6">
       <label for="precoVarejo">Preço Varejo</label>
       <input type="number" id="precoVarejo" class="form-control" [(ngModel)]="produto.precoVarejo" name="precoVarejo" required>
+      <div *ngIf="form.submitted && form.controls['precoVarejo']?.invalid" class="text-danger">
+        Preço de varejo é obrigatório.
+      </div>
     </div>
   </div>
 
+  <!-- Quantidade Mínima, Máxima e Estoque -->
   <div class="form-group row">
     <div class="col-4">
-      <label for="qteMin">Quant. Mínima </label>
+      <label for="qteMin">Quant. Mínima</label>
       <input type="number" id="qteMin" class="form-control" [(ngModel)]="produto.qteMin" name="qteMin" required>
+      <div *ngIf="form.submitted && form.controls['qteMin']?.invalid" class="text-danger">
+        Quantidade mínima é obrigatória.
+      </div>
     </div>
 
     <div class="col-4">
-      <label for="qteMax">Quant. Máxima </label>
+      <label for="qteMax">Quant. Máxima</label>
       <input type="number" id="qteMax" class="form-control" [(ngModel)]="produto.qteMax" name="qteMax" required>
+      <div *ngIf="form.submitted && form.controls['qteMax']?.invalid" class="text-danger">
+        Quantidade máxima é obrigatória.
+      </div>
     </div>
 
     <div class="col-4">
       <label for="qteEstoque">Quant. Estoque</label>
       <input type="number" id="qteEstoque" class="form-control" [(ngModel)]="produto.qteEstoque" name="qteEstoque" required>
+      <div *ngIf="form.submitted && form.controls['qteEstoque']?.invalid" class="text-danger">
+        Quantidade em estoque é obrigatória.
+      </div>
     </div>
   </div>
 
+  <!-- Botões de Ação -->
   <div class="form-group button-group">
     <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Atualizar' : 'Cadastrar' }}</button>
-    <a (click)="cancel()" class="btn btn-secondary"> Cancelar </a>
+    <a (click)="cancel()" class="btn btn-secondary">Cancelar</a>
   </div>
 </form>

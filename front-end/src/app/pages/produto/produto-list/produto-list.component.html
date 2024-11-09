@@ -2,90 +2,131 @@
   <div class="row">
     <div class="col-md-12">
       <h2> Listagem de produtos </h2>
-      
+
       <div class="button-group">
         <button (click)="openModal()" class="btn btn-primary">
           Adicionar (<i class="fas fa-plus"></i>)
+        </button>
+        <button (click)="openInactiveListModal()" class="btn btn-primary">
+          Produtos inativos (<i class="fas fa-minus"></i>)
         </button>
         <button (click)="openModal()" class="btn btn-primary">
           Gerar relatório
         </button>
       </div>
 
-      <table datatable [dtOptions]="dtOptions" class="shadow table table-striped-columns table-hover p-2">
-        <thead>
-          <tr>
-            <th> ID </th>
-            <th> Código de Barras </th>
-            <th> Descricao </th>
-            <th> Preço Atacado </th>
-            <th> Preço Varejo </th>
-            <th> Quant. em Estoque </th>
-            <th> Ações </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let produto of produtos">
-            <td>{{ produto.idProduto }}</td>
-            <td>{{ produto.codBarras }}</td>
-            <td>{{ produto.descricao }}</td>
-            <td>R$ {{ produto.precoAtacado.toFixed(2) }}</td>
-            <td>R$ {{ produto.precoVarejo.toFixed(2) }}</td>
-            <td>{{ produto.qteEstoque }}</td>
-            <td>
-              <button (click)="editProduct(produto.idProduto)" class="btn btn-info btn-sm">
-                <i class="far fa-edit"></i>
-              </button>
-              <button (click)="openRemoveModal(produto.idProduto)" class="btn btn-danger btn-sm">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<div class="modal-backdrop fade show" *ngIf="isModalFormOpen" (click)="closeModal()"></div>
-<div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalFormOpen"
-  [style.display]="isModalFormOpen ? 'block' : 'none'" aria-modal="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
-    (click)="$event.stopPropagation()">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{ isEditMode ? 'Editar produto existente' : 'Adicionar novo produto' }}</h5>
-        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-produto-form [idProduto]="produtoSelecionado" (onCloseModal)="onModalClose()" (onSave)="reloadProducts()"></app-produto-form>
+      <div class="table-responsive pt-4">
+        <table class="display shadow table table-striped table-hover">
+          <thead>
+            <tr>
+              <th> ID </th>
+              <th> Código de Barras </th>
+              <th> Descricao </th>
+              <th> Preço Atacado </th>
+              <th> Preço Varejo </th>
+              <th> Quant. em Estoque </th>
+              <th> Ações </th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th> ID </th>
+              <th> Código de Barras </th>
+              <th> Descricao </th>
+              <th> Preço Atacado </th>
+              <th> Preço Varejo </th>
+              <th> Quant. em Estoque </th>
+              <th> Ações </th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr *ngFor="let produto of produtos">
+              <td>{{ produto.idProduto }}</td>
+              <td>{{ produto.codBarras }}</td>
+              <td>{{ produto.descricao }}</td>
+              <td>R$ {{ produto.precoAtacado.toFixed(2) }}</td>
+              <td>R$ {{ produto.precoVarejo.toFixed(2) }}</td>
+              <td>{{ produto.qteEstoque }}</td>
+              <td>
+                <button (click)="editProduct(produto.idProduto)" class="btn btn-info btn-sm">
+                  <i class="far fa-edit"></i>
+                </button>
+                <button (click)="openRemoveModal(produto.idProduto)" class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-</div>
 
-<div class="modal-backdrop fade show" *ngIf="isModalRemoveOpen" (click)="closeModal()"></div>
-<div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalRemoveOpen"
-  [style.display]="isModalRemoveOpen ? 'block' : 'none'" aria-modal="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
-    (click)="$event.stopPropagation()">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmar remoção</h5>
-        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+  <div class="modal-backdrop fade show" *ngIf="isModalFormOpen" (click)="closeModal()"></div>
+  <div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalFormOpen"
+    [style.display]="isModalFormOpen ? 'block' : 'none'" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
+      (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ isEditMode ? 'Editar produto existente' : 'Adicionar novo produto' }}</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-produto-form [idProduto]="produtoSelecionado" (onCloseModal)="onModalClose()"
+            (onSave)="reloadProducts()"></app-produto-form>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <div class="modal-body">
-        <p>Tem certeza de que deseja remover o produto selecionado?</p>
+  <div class="modal-backdrop fade show" *ngIf="isModalRemoveOpen" (click)="closeModal()"></div>
+  <div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalRemoveOpen"
+    [style.display]="isModalRemoveOpen ? 'block' : 'none'" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
+      (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmar remoção</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <p>Tem certeza de que deseja remover o produto selecionado?</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+          <button type="button" class="btn btn-danger" (click)="deleteProduct()">Remover</button>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
-        <button type="button" class="btn btn-danger" (click)="deleteProduct()">Remover</button>
+  <div class="modal-backdrop fade show" *ngIf="isModalInactiveOpen" (click)="closeModal()"></div>
+  <div class="modal fade" tabindex="-1" role="dialog" [class.show]="isModalInactiveOpen"
+    [style.display]="isModalInactiveOpen ? 'block' : 'none'" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered-custom" role="document"
+      (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Lista de produtos inativos</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <app-produto-inativo-list #produtoInativoList (onUpdateInactiveProducts)="produtoInativoList.updateInactiveProducts()"/>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+        </div>
       </div>
     </div>
   </div>
